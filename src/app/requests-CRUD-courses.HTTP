@@ -1,0 +1,27 @@
+@courseId = 65b88a635617bc051f5daf66
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1vaGFtZWRAdGVzdC50ZXN0IiwidXNlcklkIjoiNjViYjNmNTRhY2I2MmQ5OGJkMGM0MThkIiwiaWF0IjoxNzA2Nzc5Nzk2LCJleHAiOjE3MDY3ODMzOTZ9.azLaCLNQ_dJgjeLv96wipPzVcbTOBKkJzYYalit6T90
+
+POST http://localhost:8080/courses/add
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+"name":"cousreName",
+"instructor":"instructorName",
+"maxStudents":212,
+"price":19.99
+}
+###
+
+PUT http://localhost:8080/courses/{{courseId}}
+Content-Type: application/json
+
+{
+"name":"2ndCousreName",
+"instructor":"newInstructorName",
+"maxStudents":212,
+"price":19.55
+}
+###
+DELETE http://localhost:8080/courses/{{courseId}}
+
