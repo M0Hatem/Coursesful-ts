@@ -1,0 +1,28 @@
+
+{
+  "compilerOptions": {
+    "target": "es2020",
+    "module": "es2022",
+    "moduleResolution": "node",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "useDefineForClassFields": true,
+    "downlevelIteration": true,
+    "lib": ["es2020"],
+
+
+    "sourceMap": false,
+    "outDir": "./dist",
+    "rootDir": "./src/app",
+  },
+  "include": [
+    "src/app",
+    "types"
+  ],
+  "exclude": ["node_modules","jest.config.ts","src/test"]
+}
