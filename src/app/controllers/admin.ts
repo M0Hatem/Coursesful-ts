@@ -7,15 +7,16 @@ import { validationResult } from "express-validator";
 
 const addCourse: RequestHandler = async (req, res, next) => {
   const name = req.body.name as string;
-  const instructor = req.body.instructor as string;
+  const instructorName = req.body.instructorName as string;
   const maxStudents = req.body.maxStudents as Number;
   const price = req.body.price as Number;
 
   const course = new Course({
     name: name,
-    instructor: instructor,
+    instructorName: instructorName,
     maxStudents: maxStudents,
     price: price,
+    instructorId: req.userId,
   });
   console.log(course);
   try {

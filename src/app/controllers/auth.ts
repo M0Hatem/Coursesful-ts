@@ -4,12 +4,12 @@ import jwt from "jsonwebtoken";
 import { validationResult } from "express-validator";
 
 import User from "../models/user.js";
-import { ValidationError } from "../classes/ValidationErrorClass";
+import { ValidationError } from "../classes/ValidationErrorClass.js";
 
 const signup: RequestHandler = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    next(new ValidationError("Validation failed.", 422, errors.array()));
+    return next(new ValidationError("Validation failed.", 422, errors.array()));
   }
   const name = req.body.name;
   const email = req.body.email;
