@@ -18,10 +18,13 @@ router.post(
       .custom(async (value, { req }) => {
         const doc = await Course.findOne({ name: value });
         if (doc) {
+          await doc.populate("instructorId");
+        }
+        if (doc!.instructorId!._id.toString() === req.userId) {
           return Promise.reject("there is a course with the same name");
         }
       }),
-    body("instructor").trim().not().isEmpty().isLength({ min: 3 }),
+    body("instructorName").trim().not().isEmpty().isLength({ min: 3 }),
     body("maxStudents").isNumeric({ no_symbols: true }),
   ],
   isAuth,

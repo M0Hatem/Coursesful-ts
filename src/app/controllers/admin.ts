@@ -1,11 +1,20 @@
 import { RequestHandler } from "express";
 import { ObjectId } from "mongodb";
+import { validationResult } from "express-validator";
 
 import User from "../models/user.js";
 import Course from "../models/course.js";
-import { validationResult } from "express-validator";
+
+import { ValidationError } from "../classes/ValidationErrorClass.js";
 
 const addCourse: RequestHandler = async (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return next(new ValidationError("Validation failed.", 422, errors.array()));
+  }
+  console.log(async () => {
+    return Course.findById("65bb7d7b7c69090c2e2668ea").populate("instructorId");
+  });
   const name = req.body.name as string;
   const instructorName = req.body.instructorName as string;
   const maxStudents = req.body.maxStudents as Number;
@@ -35,7 +44,7 @@ const updateCourse: RequestHandler = async (req, res, next) => {
 
   const updatedCourse = {
     name: req.body.name as string,
-    instructor: req.body.instructor as string,
+    instructorName: req.body.instructorName as string,
     maxStudents: req.body.maxStudents as Number,
     price: req.body.price as Number,
   };
