@@ -4,22 +4,14 @@ Content-Type: application/json
 {
   "name": "mohamed",
   "email": "mohamed@test.test",
-  "password": "test"
-}
-###
-POST http://localhost:8080/signup
-Content-Type: application/json
-
-{
-  "name": "mohamed",
-  "email": "mohamed1@test.test",
   "password": "test1"
 }
+
 ###
 POST http://localhost:8080/login
 Content-Type: application/json
 
 {
   "email": "mohamed@test.test",
-  "password": "test"
+  "password": "test1"
 }

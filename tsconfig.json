@@ -1,24 +1,36 @@
 
 {
+  /*
+    "skipLibCheck": true,
+    "target": "ES2018",
+    "module": "es2015",
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "strict": true,
+    "noImplicitAny": true,
+    "alwaysStrict": true
+    "moduleResolution": "node"
+  */
   "compilerOptions": {
     "target": "es2020",
-    "module": "es2022",
+    "module": "es2020",
     "moduleResolution": "node",
-    "strict": true,
+//    "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
-    "allowSyntheticDefaultImports": true,
+//    "allowJs": true,
+//    "forceConsistentCasingInFileNames": true,
+//    "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "useDefineForClassFields": true,
+//    "useDefineForClassFields": true,
     "downlevelIteration": true,
     "lib": ["es2020"],
 
 
     "sourceMap": false,
     "outDir": "./dist",
-    "rootDir": "./src/app",
+    "rootDir": "./src/app"
   },
   "include": [
     "src/app",

@@ -6,11 +6,6 @@ const CourseSchema = new Schema({
     type: String,
     require: true,
   },
-  instructorName: {
-    type: String,
-    require: true,
-  },
-
   maxStudents: {
     type: Number,
     require: true,
@@ -19,10 +14,18 @@ const CourseSchema = new Schema({
     type: Number,
     require: true,
   },
+  available: {
+    type: Boolean,
+    default: true,
+  },
   instructorId: {
     type: Schema.Types.ObjectId,
     ref: "User",
     require: true,
+  },
+  subscribedStudents: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
   },
 });
 export default mongoose.model("Course", CourseSchema);

@@ -1,0 +1,28 @@
+@courseId = 65c47e8f2905ee9e155a2459
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1vaGFtZWRAdGVzdC50ZXN0IiwidXNlcklkIjoiNjVjMWU3NjFkOTc2MTJhOWM2YTJjZGM3IiwiaWF0IjoxNzA3MzgzMjQ1LCJleHAiOjE3MDczODY4NDV9.krm3bPLsfwT0OrWXMZ2RvfbrbwczH9u2KkU5MM6lb8A
+
+POST http://localhost:8080/courses/{{courseId}}/subscribe
+Content-Type: application/json
+Authorization: Bearer {{token}}
+###
+
+
+
+DELETE http://localhost:8080/courses/{{courseId}}/unsubscribe
+Content-Type: application/json
+Authorization: Bearer {{token}}
+###
+
+
+
+GET http://localhost:8080/courses
+Authorization: Bearer {{token}}
+###
+
+
+
+GET http://localhost:8080/courses/{{courseId}}
+Authorization: Bearer {{token}}
+
+
+###

@@ -4,6 +4,7 @@ import bodyParser from "body-parser";
 
 import adminRoutes from "./routes/admin.js";
 import authRoutes from "./routes/auth.js";
+import studentRoutes from "./routes/student.js";
 import globalErrorHandler from "./util/globalErrorHandler.js";
 
 const app = express();
@@ -21,7 +22,7 @@ app.use((req, res, next) => {
 });
 
 app.use(authRoutes);
-app.use("/courses", adminRoutes);
+app.use("/courses", adminRoutes, studentRoutes);
 
 app.use(globalErrorHandler);
 const start = async () => {
