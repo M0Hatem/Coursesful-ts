@@ -32,5 +32,5 @@
     "outDir": "./dist",
     "rootDir": "./"
   },
-  "exclude": ["node_modules","jest.config.ts","test"]
+  "exclude": ["node_modules","jest.config.ts","test","from"]
 }
