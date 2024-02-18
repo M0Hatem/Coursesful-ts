@@ -14,7 +14,7 @@ export default async function AddCourseFunction(
     price: price,
     instructorId: req.userId,
   });
-  // console.log(course);
+  console.log(course);
   await course.save();
   return course;
 }
