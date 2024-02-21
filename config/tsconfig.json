@@ -13,7 +13,7 @@
   */
   "compilerOptions": {
     "target": "es2020",
-    "module": "es2020",
+    "module": "CommonJS",
     "moduleResolution": "node",
 //    "strict": true,
     "esModuleInterop": true,
@@ -29,8 +29,11 @@
 
 
     "sourceMap": false,
-    "outDir": "./dist",
-    "rootDir": "./"
+    "outDir": "../dist",
+    "rootDir": "../src"
   },
-  "exclude": ["node_modules","jest.config.ts","test","from"]
+  "include": ["../src"],
+  "exclude": [
+    "../node_modules",
+    "../config","../test","../from"]
 }

@@ -1,0 +1,3 @@
+DELETE http://localhost:8080/courses/{{courseId}}/unsubscribe
+Content-Type: application/json
+Authorization: Bearer {{token}}

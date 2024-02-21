@@ -1,0 +1,9 @@
+POST http://localhost:8080/courses/add
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name":"cousreNamesd12sdsd1",
+  "maxStudents":212,
+  "price":19.99
+}

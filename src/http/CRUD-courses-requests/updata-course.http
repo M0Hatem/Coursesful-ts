@@ -1,0 +1,9 @@
+PUT http://localhost:8080/courses/{{courseId}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name":"2ndCousreName",
+  "maxStudents":212,
+  "price":19.55
+}

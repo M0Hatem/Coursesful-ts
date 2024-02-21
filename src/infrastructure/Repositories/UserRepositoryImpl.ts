@@ -5,7 +5,12 @@ import Course from "../../Domain/Entites/Course";
 
 class UserRepositoryImpl implements UserRepository {
   async findById(userId: string): Promise<User | null> {
-    return UserMongooseModel.findById(userId);
+    const User = await UserMongooseModel.findById(userId);
+    return {
+      name: User.name,
+      email: User.email,
+      password: User.password,
+    };
   }
 
   async findByIdAndDelete(userId: string): Promise<void | null> {
@@ -16,8 +21,9 @@ class UserRepositoryImpl implements UserRepository {
     return UserMongooseModel.findByIdAndUpdate(userId, { $set: course });
   }
 
-  async save(userId: string): Promise<User> {
+  async save(userId: string): Promise<void> {
     const user = await UserMongooseModel.findById(userId);
-    return user.save();
+    await user.save();
+    return;
   }
 }
