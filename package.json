@@ -2,11 +2,11 @@
   "name": "coursesful-ts",
   "version": "1.0.0",
   "description": "project handle restful req for courses sites",
-  "main": "../app.ts",
+  "main": "app.ts",
 
   "scripts": {
-    "start": "../node_modules/.bin/nodemon ../dist/app.js",
-    "test": "../node_modules/.bin/jest"
+    "start": "node_modules/.bin/nodemon dist/app.js",
+    "test": "node_modules/.bin/jest"
   },
   "repository": {
     "type": "git",

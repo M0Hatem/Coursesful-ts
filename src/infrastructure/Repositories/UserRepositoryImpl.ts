@@ -1,10 +1,10 @@
-import UserRepository from "../../Domain/Repositories/UserRepository";
 import User from "../../Domain/Entites/User";
 import UserMongooseModel from "../Models/UserMongooseModel";
 import Course from "../../Domain/Entites/Course";
+import AdminRepository from "../../Domain/Repositories/AdminRepository";
 
-class UserRepositoryImpl implements UserRepository {
-  async findById(userId: string): Promise<User | null> {
+export default class UserRepositoryImpl implements AdminRepository {
+  async findById(userId: string): Promise<User> {
     const User = await UserMongooseModel.findById(userId);
     return {
       name: User.name,
@@ -26,4 +26,9 @@ class UserRepositoryImpl implements UserRepository {
     await user.save();
     return;
   }
+  addCourse(course: Course): User {
+    return;
+  }
+  deleteCourse(courseId: string) {}
+  updateCourse(course: Course) {}
 }

@@ -3,8 +3,9 @@ import Student from "./Student";
 
 export default interface Course {
   name: string;
-  maxStudent: number;
   price: number;
-  available: boolean;
+  maxStudent: number;
+  InstructorName: string;
   subscribedStudents: Student[];
+  available: boolean;
 }

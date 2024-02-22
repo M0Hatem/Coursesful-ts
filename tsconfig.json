@@ -29,11 +29,13 @@
 
 
     "sourceMap": false,
-    "outDir": "../dist",
-    "rootDir": "../src"
+    "outDir": "./dist",
+    "rootDir": "./src"
   },
-  "include": ["../src"],
+  "include": [
+    "./src"
+  ],
   "exclude": [
-    "../node_modules",
-    "../config","../test","../from"]
+    "./node_modules",
+    "config","test","from"]
 }

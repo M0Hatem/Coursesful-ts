@@ -1,10 +1,20 @@
 import CourseRepository from "../../Domain/Repositories/CourseRepository";
 import Course from "../../Domain/Entites/Course";
 import CourseMongooseModel from "../Models/CourseMongooseModel";
+import CourseDto from "../Models/CourseDto";
 
-class CourseRepositoryImpl implements CourseRepository {
-  async findById(courseId: string): Promise<Course> {
-    return CourseMongooseModel.findById(courseId) as any;
+export default class CourseRepositoryImpl implements CourseRepository {
+  async getCourse(courseId: string, userId: string): Promise<CourseDto> {
+    const doc = await CourseMongooseModel.find({
+      _id: courseId,
+      subscribedStudents: userId,
+    }).populate("instructorId");
+    return new CourseDto(
+      doc[0].name,
+      doc[0].price,
+      doc[0].InstructorName,
+      doc[0].available
+    );
   }
 
   async findByIdAndDelete(courseId: string): Promise<void> {
