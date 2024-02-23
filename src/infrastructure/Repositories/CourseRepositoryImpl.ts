@@ -2,12 +2,16 @@ import CourseRepository from "../../Domain/Repositories/CourseRepository";
 import Course from "../../Domain/Entites/Course";
 import CourseMongooseModel from "../Models/CourseMongooseModel";
 import CourseDto from "../Models/CourseDto";
+import UserMongooseModel from "../Models/UserMongooseModel";
 
 export default class CourseRepositoryImpl implements CourseRepository {
   async getCourse(courseId: string, userId: string): Promise<CourseDto> {
+    console.log("working");
+    const User = await UserMongooseModel.findById("65c1e761d97612a9c6a2cdc7");
+
     const doc = await CourseMongooseModel.find({
       _id: courseId,
-      subscribedStudents: userId,
+      //TODO get  subscribedStudents: userId back
     }).populate("instructorId");
     return new CourseDto(
       doc[0].name,

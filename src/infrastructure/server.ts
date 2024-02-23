@@ -6,17 +6,20 @@ import cors from "cors";
 import globalErrorHandler from "../util/globalErrorHandler";
 import AdminRoutes from "../Presentation/Routes/AdminRoutes";
 import StudentRoutes from "../Presentation/Routes/StudentRoutes";
+import AuthRoutes from "../Presentation/Routes/AuthRoutes";
 
 export function createServer() {
   const app = express();
 
-  const adminRoutes = new AdminRoutes().getRouter();
+  const authRoutes = new AuthRoutes().getRouter();
+  const adminRoutes = new AdminRoutes().getRouter(); //TODO reuse the adminRoute
   const studentRoutes = new StudentRoutes().getRouter();
 
   app.use(bodyParser.json());
   app.use(cors());
 
-  app.use("/courses", adminRoutes, studentRoutes);
+  app.use(authRoutes);
+  app.use("/courses", studentRoutes);
 
   app.use(globalErrorHandler);
 

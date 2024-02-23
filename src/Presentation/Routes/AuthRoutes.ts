@@ -1,12 +1,15 @@
 import { Router } from "express";
 import Validator from "../middlewares/Validator";
+import AuthController from "../Controllers/AuthController";
 
 export default class AuthRoutes {
   private readonly router: Router;
   private validator: Validator;
+  private authControllers: AuthController;
   constructor() {
     this.router = Router();
     this.validator = new Validator();
+    this.authControllers = new AuthController();
     this.setupRoutes();
   }
   private setupRoutes() {
@@ -15,10 +18,11 @@ export default class AuthRoutes {
       this.validator.emailValidation,
       this.validator.passwordValidator,
     ]);
-    this.router.post("/login", [
-      this.validator.emailValidation,
-      this.validator.passwordValidator,
-    ]);
+    this.router.post(
+      "/login",
+      //TODO return the validation back
+      this.authControllers.login
+    );
   }
   getRouter(): Router {
     return this.router;

@@ -17,7 +17,7 @@ export default class StudentRoutes {
     this.router.get("/subscribed", this.isAuth);
     this.router.post("/:id/subscribe", this.isAuth);
     this.router.delete("/:id/unsubscribe", this.isAuth);
-    this.router.get("/:id", this.isAuth, this.userController.getOneCourse);
+    this.router.get("/:id", this.isAuth, this.userController.getOneCourse); //TODO get authMiddleware back
     this.router.get("/", this.isAuth);
   }
   getRouter(): Router {

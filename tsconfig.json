@@ -30,10 +30,11 @@
 
     "sourceMap": false,
     "outDir": "./dist",
-    "rootDir": "./src"
+    "rootDir": "./"
   },
   "include": [
-    "./src"
+    "./src",
+    "app.ts"
   ],
   "exclude": [
     "./node_modules",
