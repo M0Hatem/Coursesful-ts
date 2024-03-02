@@ -28,14 +28,17 @@ export default class AuthAppServices implements AuthServices {
     name: string,
     email: string,
     password: string
-  ): Promise<string | ConflictError> {
+  ): Promise<void | ConflictError> {
     const user = await this.userRepository.findOne({ email: email });
     if (user) {
-      return new ConflictError(
-        "Authentication,failed please check your email or password"
-      );
+      throw new ConflictError("E-Mail address already exists!");
     }
     const hashedPassword = await getHashedPassword(password);
-    return "";
+    await this.userRepository.createUser({
+      name: name,
+      email: email,
+      password: hashedPassword,
+    });
+    return;
   }
 }

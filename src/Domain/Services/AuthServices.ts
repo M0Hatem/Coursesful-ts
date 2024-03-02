@@ -6,7 +6,7 @@ export default interface AuthServices {
     name: string,
     email: string,
     password: string
-  ): Promise<string | AuthError>;
+  ): Promise<void | AuthError>;
 
   login(email: string, password: string): Promise<string | ConflictError>;
 }

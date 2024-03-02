@@ -3,6 +3,7 @@ import { RequestHandler } from "express";
 import AuthError from "../../types/errors/AuthError";
 import { validationResult } from "express-validator";
 import ValidationError from "../../types/ValidationError";
+import ConflictError from "../../types/errors/ConflictError";
 export default class AuthController {
   private authService: AuthAppServices;
   constructor() {
@@ -40,7 +41,15 @@ export default class AuthController {
     }
     const { name, email, password } = req.body;
     try {
-      const result = await this.authService.login(email, password);
+      const result = await this.authService.signup(name, email, password);
+      if (result instanceof ConflictError) {
+        res.status(result.statusCode).json({ message: result.message });
+      } else {
+        res.status(201).json({
+          status: "success",
+          message: "Registration successful.",
+        });
+      }
     } catch (e) {
       next(e);
     }
