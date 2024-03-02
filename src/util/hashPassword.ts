@@ -1,5 +1,9 @@
 import bcrypt from "bcrypt";
 
 export async function getHashedPassword(password: string) {
-  return await bcrypt.hash(password, 12);
+  try {
+    return await bcrypt.hash(password, 12);
+  } catch (e) {
+    throw e;
+  }
 }

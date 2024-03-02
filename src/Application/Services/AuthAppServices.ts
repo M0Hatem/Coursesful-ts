@@ -33,12 +33,16 @@ export default class AuthAppServices implements AuthServices {
     if (user) {
       throw new ConflictError("E-Mail address already exists!");
     }
-    const hashedPassword = await getHashedPassword(password);
-    await this.userRepository.createUser({
-      name: name,
-      email: email,
-      password: hashedPassword,
-    });
-    return;
+    try {
+      const hashedPassword = await getHashedPassword(password);
+      await this.userRepository.createUser({
+        name: name,
+        email: email,
+        password: hashedPassword,
+      });
+      return;
+    } catch (e) {
+      throw e;
+    }
   }
 }
