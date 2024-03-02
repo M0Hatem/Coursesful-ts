@@ -1,19 +1,25 @@
 import { body } from "express-validator";
+import { NextFunction, RequestHandler } from "express";
 
 export default class Validator {
-  async nameValidation() {
-    return body("name").trim().not().isEmpty().isLength({ min: 3 });
-  }
-  async maxStudentsValidation() {
-    return body("maxStudents").isNumeric({ no_symbols: true });
-  }
-  async emailValidation() {
-    return body("email")
+  nameValidation: RequestHandler = async (req, res, next) => {
+    await body("name").trim().not().isEmpty().isLength({ min: 3 }).run(req);
+    next();
+  };
+  maxStudentsValidation: RequestHandler = async (req, res, next) => {
+    await body("maxStudents").isNumeric({ no_symbols: true }).run(req);
+    next();
+  };
+  emailValidation: RequestHandler = async (req, res, next) => {
+    await body("email")
       .isEmail()
       .withMessage("enter valid email")
-      .normalizeEmail();
-  }
-  async passwordValidator() {
-    return body("password").trim().isLength({ min: 5 });
-  }
+      .normalizeEmail()
+      .run(req);
+    next();
+  };
+  passwordValidator: RequestHandler = async (req, res, next) => {
+    await body("password").trim().isLength({ min: 5 }).run(req);
+    next();
+  };
 }

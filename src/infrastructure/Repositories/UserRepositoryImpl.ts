@@ -14,22 +14,22 @@ export default class UserRepositoryImpl implements AdminRepository {
     };
   }
 
-  async findOne(email: string): Promise<User> {
+  async findOne(arg: UserPayload): Promise<User> {
     // const searchArguments = new UserPayload();
     // console.log(searchArguments + "from userRepoImpl");
-    // if (arg[0].name !== undefined) {
+    // if (arg.name !== undefined) {
     //   searchArguments.name = arg.name;
     // }
-    // if (arg[0].email !== undefined) {
+    // if (arg.email !== undefined) {
     //   searchArguments.email = arg.email;
     // }
-    // if (arg[0].password !== undefined) {
+    // if (arg.password !== undefined) {
     //   searchArguments.password = arg.password;
     // }
 
-    const user = await UserMongooseModel.findOne({ email: email });
+    const user = await UserMongooseModel.findOne(arg);
     console.log(user + "from userRepoImpl");
-    return;
+    return user;
   }
 
   async findByIdAndDelete(userId: string): Promise<void | null> {

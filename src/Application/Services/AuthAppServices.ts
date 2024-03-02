@@ -12,14 +12,14 @@ export default class AuthAppServices implements AuthServices {
   }
   async login(email: string, password: string): Promise<string | AuthError> {
     const user = await this.userRepository.findOne({ email: email });
-    console.log(email + "from authAppService");
     if (!user) {
       return new AuthError(
         "Authentication,failed please check your email or password",
         401
       );
     }
-    const passwordsAreEqual = passwordCompare(password, user.password);
+    const passwordsAreEqual = await passwordCompare(password, user.password);
+
     if (!passwordsAreEqual) {
       return new AuthError(
         "Authentication,failed please check your email or password",

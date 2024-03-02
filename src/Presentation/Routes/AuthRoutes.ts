@@ -20,7 +20,8 @@ export default class AuthRoutes {
     ]);
     this.router.post(
       "/login",
-      //TODO return the validation back
+      this.validator.emailValidation,
+      this.validator.passwordValidator,
       this.authControllers.login
     );
   }

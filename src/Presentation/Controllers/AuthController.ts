@@ -9,7 +9,6 @@ export default class AuthController {
     this.authService = new AuthAppServices();
   }
   login: RequestHandler = async (req, res, next) => {
-    console.log("here");
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return next(
