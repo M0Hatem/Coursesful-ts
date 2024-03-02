@@ -14,11 +14,15 @@ export default class AuthRoutes {
     this.setupRoutes();
   }
   private setupRoutes() {
-    this.router.post("/signup", [
-      this.validator.nameValidation,
-      this.validator.emailValidation,
-      this.validator.passwordValidator,
-    ]);
+    this.router.post(
+      "/signup",
+      [
+        this.validator.nameValidation,
+        this.validator.emailValidation,
+        this.validator.passwordValidator,
+      ],
+      this.authControllers.signup
+    );
     this.router.post(
       "/login",
       [this.validator.emailValidation, this.validator.passwordValidator],
