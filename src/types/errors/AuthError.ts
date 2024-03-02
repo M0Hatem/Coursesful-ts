@@ -1,7 +1,7 @@
 export default class AuthError extends Error {
   constructor(
-    public message: string,
-    public statusCode: number,
+    message: string,
+    public statusCode: number = 401,
     public data?: any[]
   ) {
     super(message);

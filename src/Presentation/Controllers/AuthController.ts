@@ -1,6 +1,6 @@
 import AuthAppServices from "../../Application/Services/AuthAppServices";
 import { RequestHandler } from "express";
-import AuthError from "../../types/AuthError";
+import AuthError from "../../types/errors/AuthError";
 import { validationResult } from "express-validator";
 import ValidationError from "../../types/ValidationError";
 export default class AuthController {
