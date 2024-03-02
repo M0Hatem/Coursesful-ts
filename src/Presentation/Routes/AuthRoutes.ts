@@ -1,6 +1,7 @@
 import { Router } from "express";
 import Validator from "../middlewares/Validator";
 import AuthController from "../Controllers/AuthController";
+import AuthAppServices from "../../Application/Services/AuthAppServices";
 
 export default class AuthRoutes {
   private readonly router: Router;
@@ -20,8 +21,7 @@ export default class AuthRoutes {
     ]);
     this.router.post(
       "/login",
-      this.validator.emailValidation,
-      this.validator.passwordValidator,
+      [this.validator.emailValidation, this.validator.passwordValidator],
       this.authControllers.login
     );
   }

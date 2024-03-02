@@ -31,4 +31,18 @@ export default class AuthController {
       next(e);
     }
   };
+  signup: RequestHandler = async (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return next(
+        new ValidationError("Validation failed.", 422, errors.array())
+      );
+    }
+    const { name, email, password } = req.body;
+    try {
+      const result = await this.authService.login(email, password);
+    } catch (e) {
+      next(e);
+    }
+  };
 }
