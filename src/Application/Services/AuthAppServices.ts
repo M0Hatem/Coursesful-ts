@@ -4,6 +4,8 @@ import UserRepositoryImpl from "../../infrastructure/Repositories/UserRepository
 import AuthError from "../../types/errors/AuthError";
 import passwordCompare from "../../util/passwordCompare";
 import { signToken } from "../../util/SignToken";
+import ConflictError from "../../types/errors/ConflictError";
+import { getHashedPassword } from "../../util/hashPassword";
 
 export default class AuthAppServices implements AuthServices {
   private userRepository: UserRepository;
@@ -12,10 +14,9 @@ export default class AuthAppServices implements AuthServices {
   }
   async login(email: string, password: string): Promise<string | AuthError> {
     const user = await this.userRepository.findOne({ email: email });
-    if (!user || (await passwordCompare(password, user.password))) {
-      return new AuthError(
-        "Authentication,failed please check your email or password",
-        401
+    if (!user || !(await passwordCompare(password, user.password))) {
+      throw new AuthError(
+        "Authentication,failed please check your email or password"
       );
     }
 
@@ -27,14 +28,14 @@ export default class AuthAppServices implements AuthServices {
     name: string,
     email: string,
     password: string
-  ): Promise<string | AuthError> {
+  ): Promise<string | ConflictError> {
     const user = await this.userRepository.findOne({ email: email });
     if (user) {
-      return new AuthError(
-        "Authentication,failed please check your email or password",
-        409
+      return new ConflictError(
+        "Authentication,failed please check your email or password"
       );
     }
+    const hashedPassword = await getHashedPassword(password);
     return "";
   }
 }

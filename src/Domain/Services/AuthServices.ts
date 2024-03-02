@@ -1,4 +1,5 @@
 import AuthError from "../../types/errors/AuthError";
+import ConflictError from "../../types/errors/ConflictError";
 
 export default interface AuthServices {
   signup(
@@ -7,5 +8,5 @@ export default interface AuthServices {
     password: string
   ): Promise<string | AuthError>;
 
-  login(email: string, password: string): Promise<string | AuthError>;
+  login(email: string, password: string): Promise<string | ConflictError>;
 }
