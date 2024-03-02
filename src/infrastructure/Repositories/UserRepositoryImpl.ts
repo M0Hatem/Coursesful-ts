@@ -5,6 +5,16 @@ import AdminRepository from "../../Domain/Repositories/AdminRepository";
 import UserPayload from "../Models/UserPayload";
 
 export default class UserRepositoryImpl implements AdminRepository {
+  async createUser(arg: UserPayload): Promise<void> {
+    const newUser = new UserMongooseModel({
+      name: arg.name,
+      email: arg.email,
+      password: arg.password,
+    });
+    await newUser.save();
+    return;
+  }
+
   async findById(userId: string): Promise<User> {
     const User = await UserMongooseModel.findById(userId);
     return {
