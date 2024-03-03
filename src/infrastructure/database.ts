@@ -6,6 +6,6 @@ export async function connectDatabase() {
 
     console.log("Database connected");
   } catch (err) {
-    throw Error(err);
+    throw err;
   }
 }

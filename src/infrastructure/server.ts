@@ -19,7 +19,7 @@ export function createServer() {
   app.use(cors());
 
   app.use(authRoutes);
-  app.use("/courses", studentRoutes);
+  app.use("/courses", studentRoutes, adminRoutes);
 
   app.use(globalErrorHandler);
 

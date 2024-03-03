@@ -3,6 +3,9 @@ import Course from "../../Domain/Entites/Course";
 import CourseMongooseModel from "../Models/CourseMongooseModel";
 import CourseDto from "../Models/CourseDto";
 import UserMongooseModel from "../Models/UserMongooseModel";
+import CoursePayload from "../Models/CoursePayload";
+import { Promise } from "mongoose";
+import PopulatedCourse from "../Models/PopulatedCourse";
 
 export default class CourseRepositoryImpl implements CourseRepository {
   async getCourse(courseId: string, userId: string): Promise<CourseDto> {
@@ -32,5 +35,56 @@ export default class CourseRepositoryImpl implements CourseRepository {
   async save(courseId: string): Promise<Course> {
     const course = await CourseMongooseModel.findById(courseId);
     return course.save();
+  }
+
+  getSubscribedCourses = async (
+    userId: string,
+    availability: boolean
+  ): Promise<CourseDto[]> => {
+    let subscribedCourses;
+
+    if (!availability) {
+      subscribedCourses = await UserMongooseModel.findById(userId).populate({
+        path: "subscribedCourses",
+        match: { available: availability },
+        select: "-subscribedStudents",
+      });
+    }
+
+    subscribedCourses = await UserMongooseModel.findById(userId)
+      .populate("subscribedCourses")
+      .populate("instructorId");
+    return subscribedCourses.subscribedCourses.map((course: any) => {
+      return new CourseDto(course.name, course.price, course.instructorId.name);
+    });
+  };
+
+  async findOne(arg: CoursePayload): Promise<Course> {
+    const course = await CourseMongooseModel.findOne(arg);
+    console.log(course + "from courseRepoImpl");
+    return course;
+  }
+
+  async populateCourse(
+    arg: CoursePayload,
+    path: string
+  ): Promise<PopulatedCourse> {
+    return CourseMongooseModel.findOne(arg).populate(path);
+  }
+
+  async addCourse(
+    course: {
+      name: string;
+      maxStudents: number;
+      price: number;
+    },
+    userId: string
+  ): Promise<Course> {
+    return await new CourseMongooseModel({
+      name: course.name,
+      maxStudents: course.maxStudents,
+      price: course.price,
+      instructorId: userId,
+    }).save();
   }
 }

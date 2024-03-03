@@ -3,11 +3,11 @@ import { connectDatabase } from "./src/infrastructure/database";
 import shutdown from "./src/util/shutdown";
 import { Server } from "http";
 
-const app = createServer();
 let server: Server;
 
 const start = async () => {
   try {
+    const app = createServer();
     await connectDatabase();
     server = app.listen(process.env.PORT, () => console.log("Server started"));
   } catch (err) {

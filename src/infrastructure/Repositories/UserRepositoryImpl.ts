@@ -18,6 +18,7 @@ export default class UserRepositoryImpl implements AdminRepository {
   async findById(userId: string): Promise<User> {
     const User = await UserMongooseModel.findById(userId);
     return {
+      _id: User._id,
       name: User.name,
       email: User.email,
       password: User.password,
@@ -25,18 +26,6 @@ export default class UserRepositoryImpl implements AdminRepository {
   }
 
   async findOne(arg: UserPayload): Promise<User> {
-    // const searchArguments = new UserPayload();
-    // console.log(searchArguments + "from userRepoImpl");
-    // if (arg.name !== undefined) {
-    //   searchArguments.name = arg.name;
-    // }
-    // if (arg.email !== undefined) {
-    //   searchArguments.email = arg.email;
-    // }
-    // if (arg.password !== undefined) {
-    //   searchArguments.password = arg.password;
-    // }
-
     const user = await UserMongooseModel.findOne(arg);
     console.log(user + "from userRepoImpl");
     return user;

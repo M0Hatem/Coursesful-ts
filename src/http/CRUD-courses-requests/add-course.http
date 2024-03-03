@@ -3,7 +3,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "name":"cousreNamesd12sdsd1",
+  "name":"cousreNames1sdsd1",
   "maxStudents":212,
   "price":19.99
 }

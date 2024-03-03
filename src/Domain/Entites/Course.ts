@@ -6,6 +6,7 @@ export default interface Course {
   price: number;
   maxStudent: number;
   InstructorName: string;
+  instructorId?: string | Instructor;
   subscribedStudents: Student[];
   available: boolean;
 }

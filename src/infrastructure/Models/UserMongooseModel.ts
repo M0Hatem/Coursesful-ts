@@ -1,7 +1,9 @@
 import mongoose, { Document, Schema } from "mongoose";
 import User from "../../Domain/Entites/User";
 
-interface UserDocument extends User, Document {}
+interface UserDocument extends User, Document {
+  _id: string;
+}
 
 const UserSchema = new Schema({
   name: {

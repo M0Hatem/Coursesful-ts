@@ -1,7 +1,7 @@
 export default class AddCourseRequest {
   constructor(
     public name: string,
-    public instructorName: string,
+    public maxStudents: number,
     public price: number
   ) {}
 }

@@ -6,6 +6,6 @@ export default class CourseDto {
     public name: string,
     public price: number,
     public InstructorName: string,
-    public available: boolean
+    public available?: boolean
   ) {}
 }

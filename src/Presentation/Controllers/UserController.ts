@@ -19,4 +19,14 @@ export default class UserController {
       next(e);
     }
   };
+
+  getSubscribedCourses: RequestHandler = async (req, res, next) => {
+    const userId = req.userId;
+    const courses = await this.userServices.getSubscribedCourses(userId, true);
+    res.status(200).json({ courses: courses });
+  };
+
+  getAllCourses: RequestHandler = async (req, res, next) => {
+    res.status(200);
+  };
 }
