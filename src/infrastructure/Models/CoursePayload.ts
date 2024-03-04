@@ -1,3 +1,7 @@
 export default class CoursePayload {
-  constructor(public name?: string, public instructorId?: string) {}
+  constructor(
+    public _id?: string,
+    public name?: string,
+    public instructorId?: string
+  ) {}
 }

@@ -6,6 +6,8 @@ import UserMongooseModel from "../Models/UserMongooseModel";
 import CoursePayload from "../Models/CoursePayload";
 import { Promise } from "mongoose";
 import PopulatedCourse from "../Models/PopulatedCourse";
+import course from "../../../from/src/app/models/course";
+import NotFoundError from "../../types/errors/NotFoundError";
 
 export default class CourseRepositoryImpl implements CourseRepository {
   async getCourse(courseId: string, userId: string): Promise<CourseDto> {
@@ -86,5 +88,21 @@ export default class CourseRepositoryImpl implements CourseRepository {
       price: course.price,
       instructorId: userId,
     }).save();
+  }
+
+  async findById(courseId: string): Promise<Course | NotFoundError> {
+    const result = await CourseMongooseModel.findById(courseId);
+    if (!result) {
+      return new NotFoundError("Course Not found");
+    }
+    return result;
+  }
+
+  async findOneAndUpdate(arg: CoursePayload, course: Course): Promise<void> {
+    //const course = await Course.findOneAndUpdate(
+    //       { _id: new ObjectId(courseId) },
+    //       updatedCourse
+    //     );
+    return CourseMongooseModel.findOneAndUpdate(arg, course);
   }
 }

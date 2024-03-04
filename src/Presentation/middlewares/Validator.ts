@@ -10,6 +10,10 @@ export default class Validator {
     await body("maxStudents").isNumeric({ no_symbols: true }).run(req);
     next();
   };
+  priceValidation: RequestHandler = async (req, res, next) => {
+    await body("price").isFloat().run(req);
+    next();
+  };
   emailValidation: RequestHandler = async (req, res, next) => {
     await body("email")
       .isEmail()

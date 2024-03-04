@@ -2,6 +2,7 @@ import Course from "../Entites/Course";
 import CourseDto from "../../infrastructure/Models/CourseDto";
 import CoursePayload from "../../infrastructure/Models/CoursePayload";
 import PopulatedCourse from "../../infrastructure/Models/PopulatedCourse";
+import NotFoundError from "../../types/errors/NotFoundError";
 
 export default interface CourseRepository {
   findOne(arg: CoursePayload): Promise<Course>;
@@ -24,4 +25,11 @@ export default interface CourseRepository {
     },
     userId: string
   ): Promise<Course>;
+
+  findById(courseId: string): Promise<Course | NotFoundError>;
+
+  findOneAndUpdate(
+    arg: CoursePayload,
+    course: { name?: string; maxStudents?: number; price?: number }
+  ): Promise<void>;
 }

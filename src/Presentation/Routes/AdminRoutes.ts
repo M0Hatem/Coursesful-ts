@@ -23,11 +23,17 @@ export default class AdminRoutes {
       [this.validator.nameValidation, this.validator.maxStudentsValidation],
       this.adminController.addCourse
     );
-    this.router.put("/:id", this.isAuth, [
-      this.validator.nameValidation,
-      this.validator.maxStudentsValidation,
-    ]);
-    this.router.delete("/:id", this.isAuth);
+    this.router.put(
+      "/:id",
+      this.isAuth,
+      [
+        this.validator.nameValidation,
+        this.validator.maxStudentsValidation,
+        this.validator.priceValidation,
+      ],
+      this.adminController.updateCourse
+    );
+    this.router.delete("/:id", this.isAuth, this.adminController.deleteCourse);
   }
   getRouter(): Router {
     return this.router;
