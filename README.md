@@ -32,7 +32,6 @@ This project is a web application that provides a platform for users to subscrib
 The project follows Domain-Driven Design principles. The domain layer contains the business logic, the application layer contains use case-specific logic, and the infrastructure layer handles database operations. Mongoose is used for object data modeling (ODM), managing relationships between data, and providing schema validation.
 
 ## Use Cases
-
 #### Use Case 1: Get One Course
 
 - Description: This use case retrieves a single course based on the provided course ID and user ID.
