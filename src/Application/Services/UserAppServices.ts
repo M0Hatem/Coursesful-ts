@@ -60,4 +60,20 @@ export default class UserAppServices implements UserServices {
     }
     return await this.CourseRepository.subscribeToCourse(userId, courseId);
   }
+  async unSubscribeToCourse(
+    courseId: string,
+    userId: string
+  ): Promise<void | NotFoundError | ConflictError> {
+    const course = await this.CourseRepository.findById(userId);
+    if (!course) {
+      return new NotFoundError("course not found to subscribe.");
+    }
+    const subscribed: boolean =
+      await this.CourseRepository.isSubscribedToCourse(courseId, userId);
+
+    if (!subscribed) {
+      return new ConflictError("already unSubscribed!");
+    }
+    return await this.CourseRepository.unSubscribeToCourse(userId, courseId);
+  }
 }

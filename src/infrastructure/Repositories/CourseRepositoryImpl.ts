@@ -4,13 +4,20 @@ import CourseMongooseModel from "../Models/CourseMongooseModel";
 import CourseDto from "../Models/CourseDto";
 import UserMongooseModel from "../Models/UserMongooseModel";
 import CoursePayload from "../Models/CoursePayload";
-import { Promise } from "mongoose";
 import PopulatedCourse from "../Models/PopulatedCourse";
 import NotFoundError from "../../types/errors/NotFoundError";
-import course from "../../../from/src/app/models/course";
-import User from "../../../from/src/app/models/user";
 
 export default class CourseRepositoryImpl implements CourseRepository {
+  async unSubscribeToCourse(userId: string, courseId: string): Promise<void> {
+    await UserMongooseModel.findByIdAndUpdate(userId, {
+      $pull: { subscribedCourses: courseId },
+    });
+
+    await CourseMongooseModel.findByIdAndUpdate(courseId, {
+      $pull: { subscribedStudents: userId },
+    });
+    return;
+  }
   async getCourse(
     courseId: string,
     userId: string

@@ -42,4 +42,6 @@ export default interface CourseRepository {
   isSubscribedToCourse(courseId: string, userId: string): Promise<boolean>;
 
   subscribeToCourse(userId: string, courseId: string): Promise<void>;
+
+  unSubscribeToCourse(userId: string, courseId: string): Promise<void>;
 }

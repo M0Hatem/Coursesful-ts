@@ -23,7 +23,11 @@ export default class StudentRoutes {
       this.isAuth,
       this.userController.courseSubscribeHandler
     );
-    this.router.delete("/:id/unsubscribe", this.isAuth);
+    this.router.delete(
+      "/:id/unsubscribe",
+      this.isAuth,
+      this.userController.courseUnSubscribeHandler
+    );
     this.router.get("/:id", this.isAuth, this.userController.getOneCourse); //TODO get authMiddleware back
     this.router.get("/", this.isAuth, this.userController.getAllCourses);
   }
