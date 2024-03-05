@@ -4,6 +4,8 @@ import CourseRepositoryImpl from "../../infrastructure/Repositories/CourseReposi
 import { Promise } from "mongoose";
 import CourseRepository from "../../Domain/Repositories/CourseRepository";
 import NotFoundError from "../../types/errors/NotFoundError";
+import CourseMongooseModel from "../../infrastructure/Models/CourseMongooseModel";
+import ConflictError from "../../types/errors/ConflictError";
 
 export default class UserAppServices implements UserServices {
   private CourseRepository: CourseRepository;
@@ -20,8 +22,12 @@ export default class UserAppServices implements UserServices {
     }
     return result as CourseDto;
   }
-  async getAllCourses(): Promise<CourseDto[]> {
-    return Promise.resolve(undefined);
+  async getAllCourses(userId: string): Promise<CourseDto[] | NotFoundError> {
+    const allCourses = await this.CourseRepository.getAllCourses(userId);
+    if (allCourses.length === 0) {
+      return new NotFoundError("Sorry no courses yet");
+    }
+    return allCourses;
   }
 
   async getSubscribedCourses(
@@ -36,5 +42,22 @@ export default class UserAppServices implements UserServices {
       return new NotFoundError("no subscribed courses.");
     }
     return result;
+  }
+
+  async subscribeToCourse(
+    courseId: string,
+    userId: string
+  ): Promise<void | NotFoundError | ConflictError> {
+    const course = await this.CourseRepository.findById(userId);
+    if (!course) {
+      return new NotFoundError("course not found to subscribe.");
+    }
+    const subscribed: boolean =
+      await this.CourseRepository.isSubscribedToCourse(courseId, userId);
+
+    if (subscribed) {
+      return new ConflictError("already subscribed!");
+    }
+    return await this.CourseRepository.subscribeToCourse(userId, courseId);
   }
 }

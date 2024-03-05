@@ -6,8 +6,9 @@ import UserMongooseModel from "../Models/UserMongooseModel";
 import CoursePayload from "../Models/CoursePayload";
 import { Promise } from "mongoose";
 import PopulatedCourse from "../Models/PopulatedCourse";
-import course from "../../../from/src/app/models/course";
 import NotFoundError from "../../types/errors/NotFoundError";
+import course from "../../../from/src/app/models/course";
+import User from "../../../from/src/app/models/user";
 
 export default class CourseRepositoryImpl implements CourseRepository {
   async getCourse(
@@ -121,5 +122,46 @@ export default class CourseRepositoryImpl implements CourseRepository {
     //       updatedCourse
     //     );
     return CourseMongooseModel.findOneAndUpdate(arg, course);
+  }
+
+  async getAllCourses(userId: string): Promise<CourseDto[]> {
+    let allCourses = await CourseMongooseModel.find({ available: true })
+      .populate("instructorId")
+      .select(["-subscribedStudents"]);
+    let result = allCourses.map((course: any) => {
+      return new CourseDto(course.name, course.price, course.instructorId.name);
+    });
+    const unavailableSubscribedCourses = await this.getSubscribedCourses(
+      userId,
+      false
+    );
+    console.log(result.concat(unavailableSubscribedCourses));
+    return result.concat(unavailableSubscribedCourses);
+  }
+
+  async isSubscribedToCourse(
+    courseId: string,
+    userId: string
+  ): Promise<boolean> {
+    const result = await UserMongooseModel.findOne({
+      _id: userId,
+      subscribedCourses: courseId,
+    });
+
+    if (result == null) {
+      return false;
+    }
+    return true;
+  }
+
+  async subscribeToCourse(userId: string, courseId: string): Promise<void> {
+    await UserMongooseModel.findByIdAndUpdate(userId, {
+      $push: { subscribedCourses: courseId },
+    });
+
+    await CourseMongooseModel.findByIdAndUpdate(courseId, {
+      $push: { subscribedStudents: userId },
+    });
+    return;
   }
 }

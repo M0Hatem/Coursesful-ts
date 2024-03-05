@@ -36,4 +36,10 @@ export default interface CourseRepository {
     arg: CoursePayload,
     course: { name?: string; maxStudents?: number; price?: number }
   ): Promise<void>;
+
+  getAllCourses(userId: string): Promise<CourseDto[]>;
+
+  isSubscribedToCourse(courseId: string, userId: string): Promise<boolean>;
+
+  subscribeToCourse(userId: string, courseId: string): Promise<void>;
 }

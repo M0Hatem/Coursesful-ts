@@ -3,6 +3,7 @@ import { RequestHandler } from "express";
 import UserServices from "../../Domain/Services/UserServices";
 import UserAppServices from "../../Application/Services/UserAppServices";
 import NotFoundError from "../../types/errors/NotFoundError";
+import ConflictError from "../../types/errors/ConflictError";
 
 export default class UserController {
   private userServices: UserServices;
@@ -36,22 +37,22 @@ export default class UserController {
 
   getAllCourses: RequestHandler = async (req, res, next) => {
     const userId = req.userId;
-    // try {
-    //   let allCourses = await Course.find({ available: true }).select([
-    //     "-subscribedStudents",
-    //   ]);
-    //   const subscribedCourses = await User.findById(req.userId).populate({
-    //     path: "subscribedCourses",
-    //     match: { available: false },
-    //     select: "-subscribedStudents",
-    //   });
-    //   let filtered = subscribedCourses!.subscribedCourses;
-    //
-    //   // @ts-ignore
-    //   allCourses = allCourses.concat(filtered);
-    //
-    //   res.status(200).json({ courses: allCourses });
-    //   res.status(200);
-    // } catch (e) {}
+    const result = await this.userServices.getAllCourses(userId);
+    if (result instanceof NotFoundError) {
+      return res.status(result.statusCode).json({ message: result.message });
+    }
+
+    res.status(200).json({ courses: result });
+  };
+
+  courseSubscribeHandler: RequestHandler = async (req, res, next) => {
+    const courseId = req.params.id;
+    const userId = req.userId;
+    const result: void | NotFoundError | ConflictError =
+      await this.userServices.subscribeToCourse(courseId, userId);
+    if (result instanceof NotFoundError || result instanceof ConflictError) {
+      return res.status(result.statusCode).json({ message: result.message });
+    }
+    res.status(201).json({ message: "successfully subscribed!" });
   };
 }
