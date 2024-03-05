@@ -1,2 +1,2 @@
-GET http://localhost:8080/courses/65e4fe7f66cc77bbed3979d4
+GET http://localhost:8080/courses/{{courseId}}
 Authorization: Bearer {{token}}

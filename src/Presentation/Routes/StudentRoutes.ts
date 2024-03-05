@@ -13,8 +13,11 @@ export default class StudentRoutes {
     this.setupRoutes();
   }
   setupRoutes() {
-    this.router.get("/subscribed", this.isAuth);
-    this.router.get("/subscribed", this.isAuth);
+    this.router.get(
+      "/subscribed",
+      this.isAuth,
+      this.userController.getSubscribedCourses
+    );
     this.router.post("/:id/subscribe", this.isAuth);
     this.router.delete("/:id/unsubscribe", this.isAuth);
     this.router.get("/:id", this.isAuth, this.userController.getOneCourse); //TODO get authMiddleware back

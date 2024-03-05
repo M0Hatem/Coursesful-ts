@@ -6,7 +6,11 @@ import NotFoundError from "../../types/errors/NotFoundError";
 
 export default interface CourseRepository {
   findOne(arg: CoursePayload): Promise<Course>;
-  getCourse(courseId: string, userId: string): Promise<CourseDto>;
+
+  getCourse(
+    courseId: string,
+    userId: string
+  ): Promise<CourseDto | NotFoundError>;
   populateCourse(arg: CoursePayload, path: string): Promise<PopulatedCourse>;
 
   getSubscribedCourses(

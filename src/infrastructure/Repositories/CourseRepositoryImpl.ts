@@ -10,14 +10,19 @@ import course from "../../../from/src/app/models/course";
 import NotFoundError from "../../types/errors/NotFoundError";
 
 export default class CourseRepositoryImpl implements CourseRepository {
-  async getCourse(courseId: string, userId: string): Promise<CourseDto> {
-    console.log("working");
+  async getCourse(
+    courseId: string,
+    userId: string
+  ): Promise<CourseDto | NotFoundError> {
     const User = await UserMongooseModel.findById("65c1e761d97612a9c6a2cdc7");
 
     const doc = await CourseMongooseModel.find({
       _id: courseId,
       //TODO get  subscribedStudents: userId back
     }).populate("instructorId");
+    if (doc.length === 0) {
+      return new NotFoundError("Course Not Found!");
+    }
     return new CourseDto(
       doc[0].name,
       doc[0].price,
@@ -27,7 +32,9 @@ export default class CourseRepositoryImpl implements CourseRepository {
   }
 
   async findByIdAndDelete(courseId: string): Promise<void> {
-    return CourseMongooseModel.findByIdAndDelete(courseId);
+    return CourseMongooseModel.findByIdAndUpdate(courseId, {
+      available: false,
+    });
   }
 
   async findByIdAndUpdate(courseId: string, course: Course): Promise<void> {
@@ -48,14 +55,24 @@ export default class CourseRepositoryImpl implements CourseRepository {
     if (!availability) {
       subscribedCourses = await UserMongooseModel.findById(userId).populate({
         path: "subscribedCourses",
+        populate: { path: "instructorId" },
         match: { available: availability },
         select: "-subscribedStudents",
       });
+      return subscribedCourses.subscribedCourses.map((course: any) => {
+        return new CourseDto(
+          course.name,
+          course.price,
+          course.instructorId.name
+        );
+      });
     }
 
-    subscribedCourses = await UserMongooseModel.findById(userId)
-      .populate("subscribedCourses")
-      .populate("instructorId");
+    subscribedCourses = await UserMongooseModel.findById(userId).populate({
+      path: "subscribedCourses",
+      populate: { path: "instructorId" },
+    });
+
     return subscribedCourses.subscribedCourses.map((course: any) => {
       return new CourseDto(course.name, course.price, course.instructorId.name);
     });
