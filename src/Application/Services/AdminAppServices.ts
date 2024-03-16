@@ -8,8 +8,8 @@ import AuthError from "../../types/errors/AuthError";
 
 export class AdminAppServices implements AdminServices {
   private courseRepository: CourseRepository;
-  constructor() {
-    this.courseRepository = new CourseRepositoryImpl();
+  constructor(courseRepositoryImpl: CourseRepository) {
+    this.courseRepository = courseRepositoryImpl;
   }
   async addCourse(
     course: { name: string; maxStudents: number; price: number },

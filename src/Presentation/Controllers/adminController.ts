@@ -6,11 +6,12 @@ import ConflictError from "../../types/errors/ConflictError";
 import NotFoundError from "../../types/errors/NotFoundError";
 import UpdateCourseRequest from "../models/UpdateCourseRequest";
 import AuthError from "../../types/errors/AuthError";
+import CourseRepositoryImpl from "../../infrastructure/Repositories/CourseRepositoryImpl";
 
 export default class AdminController {
   private adminServices: AdminServices;
-  constructor() {
-    this.adminServices = new AdminAppServices();
+  constructor(adminServices: AdminServices) {
+    this.adminServices = adminServices;
   }
   addCourse: RequestHandler = async (req, res, next) => {
     const courseRequest = new AddCourseRequest(

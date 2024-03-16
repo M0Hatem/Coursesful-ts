@@ -8,8 +8,8 @@ import ConflictError from "../../types/errors/ConflictError";
 export default class UserController {
   private userServices: UserServices;
 
-  constructor() {
-    this.userServices = new UserAppServices();
+  constructor(userServices: UserServices) {
+    this.userServices = userServices;
   }
   getOneCourse: RequestHandler = async (req, res, next) => {
     const courseId: string = req.params.id;

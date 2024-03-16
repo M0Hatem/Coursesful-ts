@@ -4,10 +4,11 @@ import AuthError from "../../types/errors/AuthError";
 import { validationResult } from "express-validator";
 import ValidationError from "../../types/ValidationError";
 import ConflictError from "../../types/errors/ConflictError";
+import AuthServices from "../../Domain/Services/AuthServices";
 export default class AuthController {
-  private authService: AuthAppServices;
-  constructor() {
-    this.authService = new AuthAppServices();
+  private authService: AuthServices;
+  constructor(authService: AuthServices) {
+    this.authService = authService;
   }
   login: RequestHandler = async (req, res, next) => {
     const errors = validationResult(req);

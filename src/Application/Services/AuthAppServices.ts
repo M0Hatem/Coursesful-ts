@@ -9,8 +9,8 @@ import { getHashedPassword } from "../../util/hashPassword";
 
 export default class AuthAppServices implements AuthServices {
   private userRepository: UserRepository;
-  constructor() {
-    this.userRepository = new UserRepositoryImpl();
+  constructor(userRepository: UserRepository) {
+    this.userRepository = userRepository;
   }
   async login(email: string, password: string): Promise<string | AuthError> {
     const user = await this.userRepository.findOne({ email: email });

@@ -9,8 +9,8 @@ import ConflictError from "../../types/errors/ConflictError";
 
 export default class UserAppServices implements UserServices {
   private CourseRepository: CourseRepository;
-  constructor() {
-    this.CourseRepository = new CourseRepositoryImpl();
+  constructor(courseRepository: CourseRepository) {
+    this.CourseRepository = courseRepository;
   }
   async getOneCourse(
     courseId: string,

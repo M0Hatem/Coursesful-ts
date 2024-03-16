@@ -26,11 +26,9 @@
 //    "useDefineForClassFields": true,
     "downlevelIteration": true,
     "lib": ["es2020"],
-
-
     "sourceMap": false,
     "outDir": "./dist",
-    "rootDir": "./"
+    "rootDir": "./",
   },
   "include": [
     "./src",
