@@ -38,5 +38,5 @@
   ],
   "exclude": [
     "./node_modules",
-    "config","test","from"]
+    "src/config","test","from"]
 }

@@ -3,17 +3,16 @@ import "reflect-metadata";
 import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
+import { container } from "tsyringe";
 
 import globalErrorHandler from "../util/globalErrorHandler";
 import AdminRoutes from "../Presentation/Routes/AdminRoutes";
 import StudentRoutes from "../Presentation/Routes/StudentRoutes";
 import AuthRoutes from "../Presentation/Routes/AuthRoutes";
-import containerResolver from "../util/ContainerResolver";
 import UserController from "../Presentation/Controllers/UserController";
-import "../../config/diContainer";
-import { container } from "tsyringe";
 import AdminController from "../Presentation/Controllers/adminController";
 import AuthController from "../Presentation/Controllers/AuthController";
+import "../config/diContainer";
 
 export function createServer() {
   const app = express();
