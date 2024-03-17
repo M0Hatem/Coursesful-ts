@@ -5,11 +5,13 @@ import { validationResult } from "express-validator";
 import ValidationError from "../../types/ValidationError";
 import ConflictError from "../../types/errors/ConflictError";
 import AuthServices from "../../Domain/Services/AuthServices";
+import { inject, injectable } from "tsyringe";
+
+@injectable()
 export default class AuthController {
-  private authService: AuthServices;
-  constructor(authService: AuthServices) {
-    this.authService = authService;
-  }
+  constructor(
+    @inject("AuthService") private readonly authService: AuthServices
+  ) {}
   login: RequestHandler = async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {

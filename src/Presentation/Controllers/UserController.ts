@@ -4,13 +4,11 @@ import UserServices from "../../Domain/Services/UserServices";
 import UserAppServices from "../../Application/Services/UserAppServices";
 import NotFoundError from "../../types/errors/NotFoundError";
 import ConflictError from "../../types/errors/ConflictError";
+import { inject, injectable } from "tsyringe";
 
+@injectable()
 export default class UserController {
-  private userServices: UserServices;
-
-  constructor(userServices: UserServices) {
-    this.userServices = userServices;
-  }
+  constructor(@inject("UserService") private userServices: UserServices) {}
   getOneCourse: RequestHandler = async (req, res, next) => {
     const courseId: string = req.params.id;
     const userId: string = req.userId;

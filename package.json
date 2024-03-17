@@ -4,8 +4,8 @@
   "description": "project handle restful req for courses sites",
   "main": "app.ts",
   "scripts": {
-    "start": "node_modules/.bin/nodemon dist/app.js",
-    "test": "node_modules/.bin/jest"
+    "start": "yarn nodemon dist/app.js",
+    "test": "yarn jest"
   },
   "repository": {
     "type": "git",
@@ -15,7 +15,7 @@
     "RESTful"
   ],
   "author": "M16",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/M0Hatem/Coursesful-ts/issues"
   },
@@ -31,6 +31,7 @@
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.3.0",
     "mongoose": "^8.1.1",
+    "reflect-metadata": "^0.2.1",
     "tsyringe": "^4.8.0"
   },
   "devDependencies": {

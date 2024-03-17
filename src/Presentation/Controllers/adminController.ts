@@ -7,12 +7,13 @@ import NotFoundError from "../../types/errors/NotFoundError";
 import UpdateCourseRequest from "../models/UpdateCourseRequest";
 import AuthError from "../../types/errors/AuthError";
 import CourseRepositoryImpl from "../../infrastructure/Repositories/CourseRepositoryImpl";
+import { inject, injectable } from "tsyringe";
 
+@injectable()
 export default class AdminController {
-  private adminServices: AdminServices;
-  constructor(adminServices: AdminServices) {
-    this.adminServices = adminServices;
-  }
+  constructor(
+    @inject("AdminServices") private readonly adminServices: AdminServices
+  ) {}
   addCourse: RequestHandler = async (req, res, next) => {
     const courseRequest = new AddCourseRequest(
       req.body.name,

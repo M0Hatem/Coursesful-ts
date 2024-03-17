@@ -3,17 +3,19 @@ import { Router } from "express";
 import authMiddleware from "../middlewares/authMiddleware";
 import Validator from "../middlewares/Validator";
 import AdminController from "../Controllers/adminController";
+import { inject } from "tsyringe";
 
 export default class AdminRoutes {
   private readonly router: Router;
   private readonly isAuth: any;
   private validator: Validator;
-  private adminController: AdminController;
-  constructor() {
+  constructor(
+    @inject("AdminController") private readonly adminController: AdminController
+  ) {
     this.router = Router();
     this.isAuth = authMiddleware;
     this.validator = new Validator();
-    this.adminController = new AdminController();
+
     this.setupRoutes();
   }
   private setupRoutes() {

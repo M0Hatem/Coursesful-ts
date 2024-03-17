@@ -6,7 +6,9 @@ import UserMongooseModel from "../Models/UserMongooseModel";
 import CoursePayload from "../Models/CoursePayload";
 import PopulatedCourse from "../Models/PopulatedCourse";
 import NotFoundError from "../../types/errors/NotFoundError";
+import { injectable } from "tsyringe";
 
+@injectable()
 export default class CourseRepositoryImpl implements CourseRepository {
   async unSubscribeToCourse(userId: string, courseId: string): Promise<void> {
     await UserMongooseModel.findByIdAndUpdate(userId, {

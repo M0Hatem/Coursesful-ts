@@ -5,12 +5,14 @@ import CourseRepositoryImpl from "../../infrastructure/Repositories/CourseReposi
 import ConflictError from "../../types/errors/ConflictError";
 import NotFoundError from "../../types/errors/NotFoundError";
 import AuthError from "../../types/errors/AuthError";
+import { inject, injectable } from "tsyringe";
 
+@injectable()
 export class AdminAppServices implements AdminServices {
-  private courseRepository: CourseRepository;
-  constructor(courseRepositoryImpl: CourseRepository) {
-    this.courseRepository = courseRepositoryImpl;
-  }
+  constructor(
+    @inject("CourseRepository")
+    private readonly courseRepository: CourseRepository
+  ) {}
   async addCourse(
     course: { name: string; maxStudents: number; price: number },
     userId: string

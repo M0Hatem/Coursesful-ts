@@ -6,24 +6,25 @@ import CourseRepository from "../../Domain/Repositories/CourseRepository";
 import NotFoundError from "../../types/errors/NotFoundError";
 import CourseMongooseModel from "../../infrastructure/Models/CourseMongooseModel";
 import ConflictError from "../../types/errors/ConflictError";
+import { autoInjectable, inject, injectable } from "tsyringe";
 
+@injectable()
 export default class UserAppServices implements UserServices {
-  private CourseRepository: CourseRepository;
-  constructor(courseRepository: CourseRepository) {
-    this.CourseRepository = courseRepository;
-  }
+  constructor(
+    @inject("CourseRepository") private courseRepository: CourseRepository
+  ) {}
   async getOneCourse(
     courseId: string,
     userId: string
   ): Promise<CourseDto | NotFoundError> {
-    const result = await this.CourseRepository.getCourse(courseId, userId);
+    const result = await this.courseRepository.getCourse(courseId, userId);
     if (result instanceof NotFoundError) {
       return result;
     }
     return result as CourseDto;
   }
   async getAllCourses(userId: string): Promise<CourseDto[] | NotFoundError> {
-    const allCourses = await this.CourseRepository.getAllCourses(userId);
+    const allCourses = await this.courseRepository.getAllCourses(userId);
     if (allCourses.length === 0) {
       return new NotFoundError("Sorry no courses yet");
     }
@@ -34,7 +35,7 @@ export default class UserAppServices implements UserServices {
     userId: string,
     availability: boolean
   ): Promise<CourseDto[] | NotFoundError> {
-    const result = await this.CourseRepository.getSubscribedCourses(
+    const result = await this.courseRepository.getSubscribedCourses(
       userId,
       availability
     );
@@ -48,32 +49,32 @@ export default class UserAppServices implements UserServices {
     courseId: string,
     userId: string
   ): Promise<void | NotFoundError | ConflictError> {
-    const course = await this.CourseRepository.findById(userId);
+    const course = await this.courseRepository.findById(userId);
     if (!course) {
       return new NotFoundError("course not found to subscribe.");
     }
     const subscribed: boolean =
-      await this.CourseRepository.isSubscribedToCourse(courseId, userId);
+      await this.courseRepository.isSubscribedToCourse(courseId, userId);
 
     if (subscribed) {
       return new ConflictError("already subscribed!");
     }
-    return await this.CourseRepository.subscribeToCourse(userId, courseId);
+    return await this.courseRepository.subscribeToCourse(userId, courseId);
   }
   async unSubscribeToCourse(
     courseId: string,
     userId: string
   ): Promise<void | NotFoundError | ConflictError> {
-    const course = await this.CourseRepository.findById(userId);
+    const course = await this.courseRepository.findById(userId);
     if (!course) {
       return new NotFoundError("course not found to subscribe.");
     }
     const subscribed: boolean =
-      await this.CourseRepository.isSubscribedToCourse(courseId, userId);
+      await this.courseRepository.isSubscribedToCourse(courseId, userId);
 
     if (!subscribed) {
-      return new ConflictError("already unSubscribed!");
+      return new ConflictError("not Subscribed.");
     }
-    return await this.CourseRepository.unSubscribeToCourse(userId, courseId);
+    return await this.courseRepository.unSubscribeToCourse(userId, courseId);
   }
 }

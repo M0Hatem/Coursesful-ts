@@ -3,7 +3,9 @@ import UserMongooseModel from "../Models/UserMongooseModel";
 import Course from "../../Domain/Entites/Course";
 import AdminRepository from "../../Domain/Repositories/AdminRepository";
 import UserPayload from "../Models/UserPayload";
+import { injectable } from "tsyringe";
 
+@injectable()
 export default class UserRepositoryImpl implements AdminRepository {
   async createUser(arg: UserPayload): Promise<void> {
     const newUser = new UserMongooseModel({

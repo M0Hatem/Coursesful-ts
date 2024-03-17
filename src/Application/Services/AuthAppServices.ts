@@ -6,12 +6,13 @@ import passwordCompare from "../../util/passwordCompare";
 import { signToken } from "../../util/SignToken";
 import ConflictError from "../../types/errors/ConflictError";
 import { getHashedPassword } from "../../util/hashPassword";
+import { inject, injectable } from "tsyringe";
 
+@injectable()
 export default class AuthAppServices implements AuthServices {
-  private userRepository: UserRepository;
-  constructor(userRepository: UserRepository) {
-    this.userRepository = userRepository;
-  }
+  constructor(
+    @inject("UserRepository") private readonly userRepository: UserRepository
+  ) {}
   async login(email: string, password: string): Promise<string | AuthError> {
     const user = await this.userRepository.findOne({ email: email });
     if (!user || !(await passwordCompare(password, user.password))) {

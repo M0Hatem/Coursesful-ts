@@ -1,14 +1,17 @@
 import { Router } from "express";
 import authMiddleware from "../middlewares/authMiddleware";
 import UserController from "../Controllers/UserController";
+import { autoInjectable, inject } from "tsyringe";
 
 export default class StudentRoutes {
   private readonly router: Router;
-  private userController: UserController;
+
   private readonly isAuth;
-  constructor() {
+  constructor(
+    @inject("UserController") private readonly userController: UserController
+  ) {
     this.router = Router();
-    this.userController = new UserController();
+
     this.isAuth = authMiddleware;
     this.setupRoutes();
   }

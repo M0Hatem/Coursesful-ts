@@ -2,15 +2,18 @@ import { Router } from "express";
 import Validator from "../middlewares/Validator";
 import AuthController from "../Controllers/AuthController";
 import AuthAppServices from "../../Application/Services/AuthAppServices";
+import { inject } from "tsyringe";
 
 export default class AuthRoutes {
   private readonly router: Router;
   private validator: Validator;
-  private authControllers: AuthController;
-  constructor() {
+
+  constructor(
+    @inject("AuthController") private readonly authControllers: AuthController
+  ) {
     this.router = Router();
     this.validator = new Validator();
-    this.authControllers = new AuthController();
+
     this.setupRoutes();
   }
   private setupRoutes() {
