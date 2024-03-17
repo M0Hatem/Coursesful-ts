@@ -19,36 +19,22 @@ export default class UserRepositoryImpl implements AdminRepository {
 
   async findById(userId: string): Promise<User> {
     const User = await UserMongooseModel.findById(userId);
-    return {
-      _id: User._id,
-      name: User.name,
-      email: User.email,
-      password: User.password,
-    };
+    if (User) {
+      return {
+        _id: User._id,
+        name: User.name,
+        email: User.email,
+        password: User.password,
+      };
+    }
+    return null;
   }
 
   async findOne(arg: UserPayload): Promise<User> {
-    const user = await UserMongooseModel.findOne(arg);
-    console.log(user + "from userRepoImpl");
-    return user;
+    return UserMongooseModel.findOne(arg);
   }
 
   async findByIdAndDelete(userId: string): Promise<void | null> {
     return UserMongooseModel.findByIdAndDelete(userId);
   }
-
-  async findByIdAndUpdate(userId: string, course: Course): Promise<void> {
-    return UserMongooseModel.findByIdAndUpdate(userId, { $set: course });
-  }
-
-  async save(userId: string): Promise<void> {
-    const user = await UserMongooseModel.findById(userId);
-    await user.save();
-    return;
-  }
-  addCourse(course: Course): User {
-    return;
-  }
-  deleteCourse(courseId: string) {}
-  updateCourse(course: Course) {}
 }
