@@ -7,32 +7,57 @@ import CoursePayload from "../Models/CoursePayload";
 import PopulatedCourse from "../Models/PopulatedCourse";
 import NotFoundError from "../../types/errors/NotFoundError";
 import { injectable } from "tsyringe";
+import mongoose from "mongoose";
 
 @injectable()
 export default class CourseRepositoryImpl implements CourseRepository {
-  async unSubscribeToCourse(userId: string, courseId: string): Promise<void> {
-    await UserMongooseModel.findByIdAndUpdate(userId, {
-      $pull: { subscribedCourses: courseId },
-    });
-
-    await CourseMongooseModel.findByIdAndUpdate(courseId, {
-      $pull: { subscribedStudents: userId },
-    });
-    return;
-  }
-  async getCourse(
-    courseId: string,
+  async addCourse(
+    course: {
+      name: string;
+      maxStudents: number;
+      price: number;
+    },
     userId: string
-  ): Promise<CourseDto | NotFoundError> {
-    const User = await UserMongooseModel.findById("65c1e761d97612a9c6a2cdc7");
+  ): Promise<Course> {
+    return await new CourseMongooseModel({
+      name: course.name,
+      maxStudents: course.maxStudents,
+      price: course.price,
+      instructorId: userId,
+    }).save();
+  }
+  async findById(courseId: string): Promise<Course | null> {
+    if (!mongoose.Types.ObjectId.isValid(courseId)) {
+      throw new Error("Invalid ID");
+    }
+
+    const result = await CourseMongooseModel.findById(courseId);
+
+    if (!result) {
+      return null;
+    }
+    return result;
+  }
+  async findOne(arg: CoursePayload): Promise<Course> {
+    const course = await CourseMongooseModel.findOne(arg);
+    console.log(course + "from courseRepoImpl");
+    return course;
+  }
+
+  async getCourse(courseId: string, userId: string): Promise<CourseDto | null> {
+    if (!mongoose.Types.ObjectId.isValid(courseId)) {
+      return null;
+    }
 
     const doc = await CourseMongooseModel.find({
       _id: courseId,
       //TODO get  subscribedStudents: userId back
     }).populate("instructorId");
+
     if (doc.length === 0) {
-      return new NotFoundError("Course Not Found!");
+      return null;
     }
+
     return new CourseDto(
       doc[0].name,
       doc[0].price,
@@ -40,27 +65,18 @@ export default class CourseRepositoryImpl implements CourseRepository {
       doc[0].available
     );
   }
-
-  async findByIdAndDelete(courseId: string): Promise<void> {
-    return CourseMongooseModel.findByIdAndUpdate(courseId, {
-      available: false,
-    });
-  }
-
-  async findByIdAndUpdate(courseId: string, course: Course): Promise<void> {
-    return CourseMongooseModel.findByIdAndUpdate(courseId, course);
-  }
-
-  async save(courseId: string): Promise<Course> {
-    const course = await CourseMongooseModel.findById(courseId);
-    return course.save();
+  async populateCourse(
+    arg: CoursePayload,
+    path: string
+  ): Promise<PopulatedCourse> {
+    return CourseMongooseModel.findOne(arg).populate(path);
   }
 
   getSubscribedCourses = async (
     userId: string,
     availability: boolean
   ): Promise<CourseDto[]> => {
-    let subscribedCourses;
+    let subscribedCourses: any;
 
     if (!availability) {
       subscribedCourses = await UserMongooseModel.findById(userId).populate({
@@ -88,49 +104,26 @@ export default class CourseRepositoryImpl implements CourseRepository {
     });
   };
 
-  async findOne(arg: CoursePayload): Promise<Course> {
-    const course = await CourseMongooseModel.findOne(arg);
-    console.log(course + "from courseRepoImpl");
-    return course;
-  }
+  async unSubscribeToCourse(userId: string, courseId: string): Promise<void> {
+    await UserMongooseModel.findByIdAndUpdate(userId, {
+      $pull: { subscribedCourses: courseId },
+    });
 
-  async populateCourse(
-    arg: CoursePayload,
-    path: string
-  ): Promise<PopulatedCourse> {
-    return CourseMongooseModel.findOne(arg).populate(path);
+    await CourseMongooseModel.findByIdAndUpdate(courseId, {
+      $pull: { subscribedStudents: userId },
+    });
+    return;
   }
-
-  async addCourse(
-    course: {
-      name: string;
-      maxStudents: number;
-      price: number;
-    },
+  async isSubscribedToCourse(
+    courseId: string,
     userId: string
-  ): Promise<Course> {
-    return await new CourseMongooseModel({
-      name: course.name,
-      maxStudents: course.maxStudents,
-      price: course.price,
-      instructorId: userId,
-    }).save();
-  }
+  ): Promise<boolean> {
+    const result = await UserMongooseModel.findOne({
+      _id: userId,
+      subscribedCourses: courseId,
+    });
 
-  async findById(courseId: string): Promise<Course | NotFoundError> {
-    const result = await CourseMongooseModel.findById(courseId);
-    if (!result) {
-      return new NotFoundError("Course Not found");
-    }
-    return result;
-  }
-
-  async findOneAndUpdate(arg: CoursePayload, course: Course): Promise<void> {
-    //const course = await Course.findOneAndUpdate(
-    //       { _id: new ObjectId(courseId) },
-    //       updatedCourse
-    //     );
-    return CourseMongooseModel.findOneAndUpdate(arg, course);
+    return result != null;
   }
 
   async getAllCourses(userId: string): Promise<CourseDto[]> {
@@ -148,19 +141,27 @@ export default class CourseRepositoryImpl implements CourseRepository {
     return result.concat(unavailableSubscribedCourses);
   }
 
-  async isSubscribedToCourse(
-    courseId: string,
-    userId: string
-  ): Promise<boolean> {
-    const result = await UserMongooseModel.findOne({
-      _id: userId,
-      subscribedCourses: courseId,
+  async findByIdAndDelete(courseId: string): Promise<void> {
+    return CourseMongooseModel.findByIdAndUpdate(courseId, {
+      available: false,
     });
+  }
 
-    if (result == null) {
-      return false;
-    }
-    return true;
+  async findByIdAndUpdate(courseId: string, course: Course): Promise<void> {
+    return CourseMongooseModel.findByIdAndUpdate(courseId, course);
+  }
+
+  async save(courseId: string): Promise<Course> {
+    const course = await CourseMongooseModel.findById(courseId);
+    return course.save();
+  }
+
+  async findOneAndUpdate(arg: CoursePayload, course: Course): Promise<void> {
+    //const course = await Course.findOneAndUpdate(
+    //       { _id: new ObjectId(courseId) },
+    //       updatedCourse
+    //     );
+    return CourseMongooseModel.findOneAndUpdate(arg, course);
   }
 
   async subscribeToCourse(userId: string, courseId: string): Promise<void> {

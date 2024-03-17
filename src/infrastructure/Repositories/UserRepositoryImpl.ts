@@ -4,6 +4,7 @@ import Course from "../../Domain/Entites/Course";
 import AdminRepository from "../../Domain/Repositories/AdminRepository";
 import UserPayload from "../Models/UserPayload";
 import { injectable } from "tsyringe";
+import mongoose from "mongoose";
 
 @injectable()
 export default class UserRepositoryImpl implements AdminRepository {
@@ -18,6 +19,9 @@ export default class UserRepositoryImpl implements AdminRepository {
   }
 
   async findById(userId: string): Promise<User> {
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+      throw new Error("Invalid ID");
+    }
     const User = await UserMongooseModel.findById(userId);
     if (User) {
       return {

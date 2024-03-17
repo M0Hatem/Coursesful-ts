@@ -1,7 +1,9 @@
 import mongoose, { Document, Schema } from "mongoose";
 import Course from "../../Domain/Entites/Course";
 
-interface CourseDocument extends Course, Document {}
+interface CourseDocument extends Course, Document {
+  _id: string;
+}
 
 const CourseSchema = new Schema({
   name: {
@@ -25,9 +27,11 @@ const CourseSchema = new Schema({
     ref: "User",
     require: true,
   },
-  subscribedStudents: {
-    type: Schema.Types.ObjectId,
-    ref: "User",
-  },
+  subscribedStudents: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+    },
+  ],
 });
 export default mongoose.model<CourseDocument>("Course", CourseSchema);
