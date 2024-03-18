@@ -7,6 +7,7 @@ import { signToken } from "../../util/SignToken";
 import ConflictError from "../../types/errors/ConflictError";
 import { getHashedPassword } from "../../util/hashPassword";
 import { inject, injectable } from "tsyringe";
+import UserPayload from "../../infrastructure/Models/UserPayload";
 
 @injectable()
 export default class AuthAppServices implements AuthServices {
@@ -36,11 +37,10 @@ export default class AuthAppServices implements AuthServices {
     }
     try {
       const hashedPassword = await getHashedPassword(password);
-      await this.userRepository.createUser({
-        name: name,
-        email: email,
-        password: hashedPassword,
-      });
+
+      await this.userRepository.createUser(
+        new UserPayload(name, email, hashedPassword)
+      );
       return;
     } catch (e) {
       throw e;

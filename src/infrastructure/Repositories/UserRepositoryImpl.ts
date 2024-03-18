@@ -9,6 +9,9 @@ import mongoose from "mongoose";
 @injectable()
 export default class UserRepositoryImpl implements AdminRepository {
   async createUser(arg: UserPayload): Promise<void> {
+    if (!(arg instanceof UserPayload)) {
+      throw Error("Invalid payLoad");
+    }
     const newUser = new UserMongooseModel({
       name: arg.name,
       email: arg.email,
