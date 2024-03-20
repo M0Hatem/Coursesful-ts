@@ -7,12 +7,13 @@ export default interface AdminServices {
   addCourse(
     course: { name: string; maxStudents: number; price: number },
     userId: string
-  ): Promise<ConflictError | Course>;
+  ): Promise<Course>;
 
   updateCourse(
     courseId: string,
     course: { name?: string; maxStudents?: number; price?: number },
     userId: string
-  ): Promise<void | AuthError | NotFoundError>;
-  deleteCourse(courseId: string): Promise<void | NotFoundError | AuthError>;
+  ): Promise<void>;
+
+  deleteCourse(courseId: string, userId: string): Promise<void>;
 }

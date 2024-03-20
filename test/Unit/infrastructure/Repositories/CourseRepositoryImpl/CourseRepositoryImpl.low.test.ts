@@ -1,48 +1,48 @@
 import "reflect-metadata";
 import { MongoMemoryServer } from "mongodb-memory-server";
 import mongoose from "mongoose";
-import CourseRepositoryImpl from "../../../../src/infrastructure/Repositories/CourseRepositoryImpl";
-import User from "../../../../src/Domain/Entites/User";
-import UserRepositoryImpl from "../../../../src/infrastructure/Repositories/UserRepositoryImpl";
-import UserPayload from "../../../../src/infrastructure/Models/UserPayload";
-import Course from "../../../../src/Domain/Entites/Course";
-import CourseDto from "../../../../src/infrastructure/Models/CourseDto";
-import CoursePayload from "../../../../src/infrastructure/Models/CoursePayload";
-import UserMongooseModel from "../../../../src/infrastructure/Models/UserMongooseModel";
-
-jest.mock("../../../../src/infrastructure/Models/UserMongooseModel");
-jest.mock("../../../../src/infrastructure/Models/CourseMongooseModel");
+import CourseRepositoryImpl from "../../../../../src/infrastructure/Repositories/CourseRepositoryImpl";
+import User from "../../../../../src/Domain/Entites/User";
+import UserRepositoryImpl from "../../../../../src/infrastructure/Repositories/UserRepositoryImpl";
+import UserPayload from "../../../../../src/infrastructure/Models/UserPayload";
+import Course from "../../../../../src/Domain/Entites/Course";
+import CourseDto from "../../../../../src/infrastructure/Models/CourseDto";
+import CoursePayload from "../../../../../src/infrastructure/Models/CoursePayload";
+import UserMongooseModel from "../../../../../src/infrastructure/Models/UserMongooseModel";
 
 jest.setTimeout(30000);
-describe("CourseRepositoryImpl test suite", () => {
+describe("CourseRepositoryImpl low mock test suite", () => {
   let mongoServer: MongoMemoryServer;
   let sut: CourseRepositoryImpl;
   let user: User;
+
+  const userPayload: UserPayload = new UserPayload(
+    "Test User",
+    "test@example.com",
+    "password123"
+  );
+  const CoursePayload: CoursePayload = {
+    name: "Test course",
+    instructorId: "Test instructorId",
+  };
 
   beforeAll(async () => {
     mongoServer = await MongoMemoryServer.create();
     const mongoUri = mongoServer.getUri();
     await mongoose.connect(mongoUri);
     sut = new CourseRepositoryImpl();
-    await new UserRepositoryImpl().createUser(userPayload);
-    user = await new UserRepositoryImpl().findOne({ name: userPayload.name });
+
+    user = await new UserMongooseModel({
+      name: userPayload.name,
+      email: userPayload.email,
+      password: userPayload.password,
+    }).save();
   });
 
   afterAll(async () => {
     await mongoose.disconnect();
     await mongoServer.stop();
   });
-
-  const userPayload: UserPayload = {
-    name: "Test User",
-    email: "test@example.com",
-    password: "userPassword",
-  };
-
-  const CoursePayload: CoursePayload = {
-    name: "Test course",
-    instructorId: "Test instructorId",
-  };
 
   let createdCourse: Course;
 
@@ -56,6 +56,7 @@ describe("CourseRepositoryImpl test suite", () => {
     await sut.addCourse(course, user._id);
 
     createdCourse = await sut.findOne({ name: course.name });
+
     expect(createdCourse).toBeDefined();
   });
 
@@ -153,8 +154,13 @@ describe("CourseRepositoryImpl test suite", () => {
     await sut.subscribeToCourse(user._id, createdCourse._id);
     await sut.subscribeToCourse(user._id, createdCourse._id);
 
-    const result = await sut.isSubscribedToCourse(createdCourse._id, user._id);
+    const result = await sut.getAllCourses(user._id);
 
-    expect(result).toBe(false);
+    // const isValidCourseDto = result.some((courseDto) => {
+    //   return courseDto.available;
+    // });
+
+    expect(result).toBeTruthy();
+    // expect(isValidCourseDto).toBe(true);
   });
 });

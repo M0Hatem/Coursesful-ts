@@ -6,6 +6,7 @@ import ConflictError from "../../types/errors/ConflictError";
 import NotFoundError from "../../types/errors/NotFoundError";
 import AuthError from "../../types/errors/AuthError";
 import { inject, injectable } from "tsyringe";
+import Instructor from "../../Domain/Entites/Instructor";
 
 @injectable()
 export class AdminAppServices implements AdminServices {
@@ -16,30 +17,36 @@ export class AdminAppServices implements AdminServices {
   async addCourse(
     course: { name: string; maxStudents: number; price: number },
     userId: string
-  ): Promise<ConflictError | Course> {
+  ): Promise<Course> {
     let doc = await this.courseRepository.findOne({
       name: course.name,
     });
 
-    if (doc) {
-      doc = await this.courseRepository.populateCourse(
-        { name: course.name },
-        "instructorId"
-      );
-
-      // @ts-ignore
-      if (doc.instructorId._id!.toString() === userId) {
-        return new ConflictError("there is a course with the same name");
-      }
+    if (!doc) {
+      return await this.courseRepository.addCourse(course, userId);
     }
 
-    return await this.courseRepository.addCourse(course, userId);
+    doc = await this.courseRepository.populateCourse(
+      { name: course.name },
+      "instructorId"
+    );
+    // @ts-ignore
+    if (doc.instructorId._id!.toString() === userId) {
+      throw new ConflictError("there is a course with the same name");
+    } else {
+      return await this.courseRepository.addCourse(course, userId);
+    }
   }
 
-  async deleteCourse(courseId: string): Promise<void | NotFoundError> {
-    const course = await this.courseRepository.findById(courseId);
+  async deleteCourse(courseId: string, userId: string): Promise<void> {
+    let course = await this.courseRepository.findById(courseId);
+    console.log(course);
     if (!course) {
-      return new NotFoundError("Course Not Found!");
+      throw new NotFoundError("Course Not Found!");
+    }
+
+    if (course.instructorId !== userId) {
+      throw new AuthError("You Don't have access to delete this course");
     }
     await this.courseRepository.findByIdAndDelete(courseId);
   }
@@ -48,13 +55,15 @@ export class AdminAppServices implements AdminServices {
     courseId: string,
     course: { name?: string; maxStudents?: number; price?: number },
     userId: string
-  ): Promise<void | AuthError | NotFoundError> {
+  ): Promise<void> {
     const result = await this.courseRepository.findById(courseId);
+
     if (!result) {
-      return new NotFoundError("Course Not Found!");
+      throw new NotFoundError("Course Not Found!");
     }
+
     if ("instructorId" in result && result.instructorId.toString() !== userId) {
-      return new AuthError(
+      throw new AuthError(
         "You do not have the necessary permission to update this course"
       );
     }

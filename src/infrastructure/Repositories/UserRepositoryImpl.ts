@@ -22,10 +22,13 @@ export default class UserRepositoryImpl implements AdminRepository {
   }
 
   async findById(userId: string): Promise<User> {
-    if (!mongoose.Types.ObjectId.isValid(userId)) {
+    if (
+      !mongoose.Types.ObjectId.isValid(userId) ||
+      userId.toString().trim() == ""
+    ) {
       throw new Error("Invalid ID");
     }
-    const User = await UserMongooseModel.findById(userId);
+    const User = await this.findDocumentById(userId);
     if (User) {
       return {
         _id: User._id,
@@ -35,6 +38,10 @@ export default class UserRepositoryImpl implements AdminRepository {
       };
     }
     return null;
+  }
+
+  async findDocumentById(userId: string) {
+    return UserMongooseModel.findById(userId);
   }
 
   async findOne(arg: UserPayload): Promise<User> {

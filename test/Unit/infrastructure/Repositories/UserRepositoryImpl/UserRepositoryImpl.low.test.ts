@@ -1,20 +1,20 @@
 import "reflect-metadata";
 import { MongoMemoryServer } from "mongodb-memory-server";
-import UserRepositoryImpl from "../../../../src/infrastructure/Repositories/UserRepositoryImpl";
+import UserRepositoryImpl from "../../../../../src/infrastructure/Repositories/UserRepositoryImpl";
 import mongoose from "mongoose";
-import UserPayload from "../../../../src/infrastructure/Models/UserPayload";
-import User from "../../../../src/Domain/Entites/User";
+import UserPayload from "../../../../../src/infrastructure/Models/UserPayload";
+import User from "../../../../../src/Domain/Entites/User";
 
 jest.setTimeout(30000);
-describe("UserRepositoryImpl test suite", () => {
+describe("UserRepositoryImpl low mock test suite", () => {
   let mongoServer: MongoMemoryServer;
   let sut: UserRepositoryImpl;
 
-  const userPayload: UserPayload = {
-    name: "Test User",
-    email: "test@example.com",
-    password: "password123",
-  };
+  const userPayload: UserPayload = new UserPayload(
+    "Test User",
+    "test@example.com",
+    "password123"
+  );
 
   beforeAll(async () => {
     mongoServer = await MongoMemoryServer.create();
@@ -33,17 +33,7 @@ describe("UserRepositoryImpl test suite", () => {
   });
 
   let user: User;
-  it("should create UserEx", async () => {
-    await sut.createUser(userPayload);
 
-    user = await sut.findOne({
-      name: userPayload.name,
-    });
-
-    expect(user).toBeDefined();
-    expect(user.name).toBe(userPayload.name);
-    expect(user.email).toBe(userPayload.email);
-  });
   it("should create User", async () => {
     await sut.createUser(userPayload);
 
@@ -56,6 +46,7 @@ describe("UserRepositoryImpl test suite", () => {
     expect(user.email).toBe(userPayload.email);
   });
   it("should find User by Id", async () => {
+    console.log(user);
     const foundedUser = await sut.findById(user._id);
 
     console.log(user);
@@ -64,9 +55,11 @@ describe("UserRepositoryImpl test suite", () => {
     expect(foundedUser.name).toBe(user.name);
     expect(foundedUser.email).toBe(user.email);
   });
+
   it("should not find User if invalid id passed", async () => {
     await expect(sut.findById("wrongId")).rejects.toThrowError("Invalid ID");
   });
+
   it("should not find User if wrong password passed", async () => {
     const foundedUser = await sut.findById("65e45b09ee85a3af12856e92");
 
