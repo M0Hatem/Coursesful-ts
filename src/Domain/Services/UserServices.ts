@@ -18,8 +18,5 @@ export default interface UserServices {
 
   subscribeToCourse(courseId: string, userId: string): Promise<void>;
   //void | NotFoundError | ConflictError = await this.userServices.unSubscribeToCourse(courseId,userId)
-  unSubscribeToCourse(
-    courseId: string,
-    userId: string
-  ): Promise<void | NotFoundError | ConflictError>;
+  unSubscribeToCourse(courseId: string, userId: string): Promise<void>;
 }

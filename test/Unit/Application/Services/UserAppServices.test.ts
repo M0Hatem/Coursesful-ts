@@ -163,4 +163,14 @@ describe("UserAppServices test suite", () => {
 
     await expect(t).rejects.toThrow("course not found to subscribe.");
   });
+  it("should should throw an error if the user already subscribed", async () => {
+    courseRepositoryMocK.findById.mockResolvedValueOnce(someCourse);
+    courseRepositoryMocK.isSubscribedToCourse.mockResolvedValueOnce(true);
+
+    const t = async () => {
+      await sut.subscribeToCourse(validCourseId, userIdMock);
+    };
+
+    await expect(t).rejects.toThrow("already subscribed!");
+  });
 });
