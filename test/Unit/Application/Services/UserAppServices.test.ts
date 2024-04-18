@@ -141,4 +141,15 @@ describe("UserAppServices test suite", () => {
 
     await expect(t).rejects.toThrow(new NotFoundError("Sorry no courses yet"));
   });
+  it("should subscribe to the course if the course is available", async () => {
+    courseRepositoryMocK.findById.mockResolvedValueOnce(someCourse);
+    courseRepositoryMocK.isSubscribedToCourse.mockResolvedValueOnce(false);
+
+    await sut.subscribeToCourse(validCourseId, userIdMock);
+
+    expect(courseRepositoryMocK.subscribeToCourse).toHaveBeenCalledWith(
+      userIdMock,
+      validCourseId
+    );
+  });
 });

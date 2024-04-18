@@ -59,21 +59,18 @@ export default class UserAppServices implements UserServices {
     return result;
   }
 
-  async subscribeToCourse(
-    courseId: string,
-    userId: string
-  ): Promise<void | NotFoundError | ConflictError> {
+  async subscribeToCourse(courseId: string, userId: string): Promise<void> {
     const course = await this.courseRepository.findById(courseId);
     if (!course) {
-      return new NotFoundError("course not found to subscribe.");
+      throw new NotFoundError("course not found to subscribe.");
     }
     const subscribed: boolean =
       await this.courseRepository.isSubscribedToCourse(courseId, userId);
 
     if (subscribed) {
-      return new ConflictError("already subscribed!");
+      throw new ConflictError("already subscribed!");
     }
-    return await this.courseRepository.subscribeToCourse(userId, courseId);
+    await this.courseRepository.subscribeToCourse(userId, courseId);
   }
   async unSubscribeToCourse(
     courseId: string,

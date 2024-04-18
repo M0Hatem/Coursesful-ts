@@ -9,6 +9,7 @@ import { inject, injectable } from "tsyringe";
 @injectable()
 export default class UserController {
   constructor(@inject("UserService") private userServices: UserServices) {}
+
   getOneCourse: RequestHandler = async (req, res, next) => {
     const courseId: string = req.params.id;
     const userId: string = req.userId;
@@ -46,11 +47,15 @@ export default class UserController {
   courseSubscribeHandler: RequestHandler = async (req, res, next) => {
     const courseId = req.params.id;
     const userId = req.userId;
-    const result: void | NotFoundError | ConflictError =
+    try {
       await this.userServices.subscribeToCourse(courseId, userId);
-    if (result instanceof NotFoundError || result instanceof ConflictError) {
-      return res.status(result.statusCode).json({ message: result.message });
+    } catch (e) {
+      if (e instanceof NotFoundError || e instanceof ConflictError) {
+        return res.status(e.statusCode).json({ message: e.message });
+      }
+      next(e);
     }
+
     res.status(201).json({ message: "successfully subscribed!" });
   };
 
