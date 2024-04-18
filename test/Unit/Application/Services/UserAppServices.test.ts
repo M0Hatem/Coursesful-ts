@@ -152,6 +152,14 @@ describe("UserAppServices test suite", () => {
       validCourseId
     );
   });
+  it("should not subscribe to the course if the course is not found", async () => {
+    courseRepositoryMocK.findById.mockResolvedValueOnce(null);
+    const t = async () => {
+      await sut.subscribeToCourse(validCourseId, userIdMock);
+    };
+
+    await expect(t).rejects.toThrow("course not found to subscribe.");
+  });
   it("should not subscribe to the course if the course is unavailable", async () => {
     //make course unavailable
     someCourse.available = false;
@@ -172,5 +180,47 @@ describe("UserAppServices test suite", () => {
     };
 
     await expect(t).rejects.toThrow("already subscribed!");
+  });
+  it("should Unsubscribe from course if user has access", async () => {
+    courseRepositoryMocK.findById.mockResolvedValueOnce(someCourse);
+    courseRepositoryMocK.isSubscribedToCourse.mockResolvedValueOnce(true);
+
+    await sut.unSubscribeToCourse(validCourseId, userIdMock);
+
+    expect(courseRepositoryMocK.unSubscribeToCourse).toHaveBeenCalledWith(
+      userIdMock,
+      validCourseId
+    );
+  });
+  it("should throw an error if the course is not found", async () => {
+    courseRepositoryMocK.findById.mockResolvedValueOnce(null);
+
+    const t = async () => {
+      await sut.unSubscribeToCourse(validCourseId, userIdMock);
+    };
+
+    await expect(t).rejects.toThrow("course not found to subscribe.");
+  });
+  it("should throw an error if the course is unavailable", async () => {
+    //make course unavailable
+    someCourse.available = false;
+    /////////////
+    courseRepositoryMocK.findById.mockResolvedValueOnce(someCourse);
+
+    const t = async () => {
+      await sut.unSubscribeToCourse(validCourseId, userIdMock);
+    };
+
+    await expect(t).rejects.toThrow("course not found to subscribe.");
+  });
+  it("should throw an error if unsubscribing from unEnrolled course", async () => {
+    courseRepositoryMocK.findById.mockResolvedValueOnce(someCourse);
+    courseRepositoryMocK.isSubscribedToCourse(false);
+
+    const t = async () => {
+      await sut.unSubscribeToCourse(validCourseId, userIdMock);
+    };
+
+    await expect(t).rejects.toThrow("not Subscribed.");
   });
 });

@@ -11,6 +11,7 @@ export default class UserAppServices implements UserServices {
   constructor(
     @inject("CourseRepository") private courseRepository: CourseRepository
   ) {}
+
   async getOneCourse(courseId: string, userId: string): Promise<CourseDto> {
     let course: CourseDto;
 
@@ -31,6 +32,7 @@ export default class UserAppServices implements UserServices {
     }
     return course;
   }
+
   async getAllCourses(userId: string): Promise<CourseDto[]> {
     let allAvailableCourses =
       await this.courseRepository.getAllAvailableCourses();
@@ -72,9 +74,10 @@ export default class UserAppServices implements UserServices {
     }
     await this.courseRepository.subscribeToCourse(userId, courseId);
   }
+
   async unSubscribeToCourse(courseId: string, userId: string): Promise<void> {
-    const course = await this.courseRepository.findById(userId);
-    if (!course) {
+    const course = await this.courseRepository.findById(courseId);
+    if (!course || !course.available) {
       throw new NotFoundError("course not found to subscribe.");
     }
     const subscribed: boolean =
