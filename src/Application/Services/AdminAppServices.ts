@@ -14,6 +14,7 @@ export class AdminAppServices implements AdminServices {
     @inject("CourseRepository")
     private readonly courseRepository: CourseRepository
   ) {}
+
   async addCourse(request: AddCourseRequest, userId: string): Promise<Course> {
     let doc = await this.courseRepository.findOne({
       name: request.name,
@@ -25,7 +26,7 @@ export class AdminAppServices implements AdminServices {
 
     doc = await this.courseRepository.populateCourse(
       { name: request.name },
-      "instructorId?"
+      "instructorId"
     );
     // @ts-ignore
     if (doc.instructorId._id!.toString() === userId) {
@@ -37,14 +38,15 @@ export class AdminAppServices implements AdminServices {
 
   async deleteCourse(courseId: string, userId: string): Promise<void> {
     let course = await this.courseRepository.findById(courseId);
-    console.log(course);
-    if (!course) {
+
+    if (!course || !course.available) {
       throw new NotFoundError("Course Not Found!");
     }
 
-    if (course.instructorId !== userId) {
+    if (course.instructorId.toString() !== userId) {
       throw new AuthError("You Don't have access to delete this course");
     }
+
     await this.courseRepository.findByIdAndDelete(courseId);
   }
 

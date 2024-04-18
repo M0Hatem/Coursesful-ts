@@ -53,7 +53,7 @@ describe("AdminAppServices test suite", () => {
     });
     expect(courseRepositoryMock.populateCourse).toHaveBeenCalledWith(
       { name: someCourse.name },
-      "instructorId?"
+      "instructorId"
     );
     expect(courseRepositoryMock.addCourse).toHaveBeenCalledWith(
       someCourse,
@@ -78,7 +78,7 @@ describe("AdminAppServices test suite", () => {
     });
     expect(courseRepositoryMock.populateCourse).toHaveBeenCalledWith(
       { name: someCourse.name },
-      "instructorId?"
+      "instructorId"
     );
     expect(courseRepositoryMock.addCourse).toHaveBeenCalledTimes(0);
   });
@@ -96,6 +96,7 @@ describe("AdminAppServices test suite", () => {
       someCourse._id
     );
   });
+
   it("should prevent a user who is not the course owner from deleting the course", async () => {
     courseRepositoryMock.findById.mockResolvedValueOnce({
       ...someCourse,
@@ -109,6 +110,16 @@ describe("AdminAppServices test suite", () => {
     await expect(t).rejects.toThrow(
       "You Don't have access to delete this course"
     );
+    expect(courseRepositoryMock.findByIdAndDelete).toHaveBeenCalledTimes(0);
+  });
+  it("should throw an error when attempting to delete a course that does not exist", async () => {
+    courseRepositoryMock.findById.mockResolvedValueOnce(null);
+
+    const t = async () => {
+      await sut.deleteCourse(someCourse._id, someUserId);
+    };
+
+    await expect(t).rejects.toThrow("Course Not Found!");
     expect(courseRepositoryMock.findByIdAndDelete).toHaveBeenCalledTimes(0);
   });
   it("should throw an error when attempting to delete a course that does not exist", async () => {

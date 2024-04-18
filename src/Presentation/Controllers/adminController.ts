@@ -36,6 +36,7 @@ export default class AdminController {
       if (e instanceof ConflictError) {
         return res.status(e.statusCode).json({ message: e.message });
       }
+      next(e);
     }
   };
 
@@ -49,6 +50,7 @@ export default class AdminController {
       if (e instanceof NotFoundError) {
         return res.status(e.statusCode).json({ message: e.message });
       }
+      next(e);
     }
   };
 
@@ -68,6 +70,7 @@ export default class AdminController {
       if (e instanceof NotFoundError || e instanceof AuthError) {
         return res.status(e.statusCode).json({ message: e.message });
       }
+      next(e);
     }
   };
 }

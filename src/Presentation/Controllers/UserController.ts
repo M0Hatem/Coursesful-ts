@@ -15,33 +15,42 @@ export default class UserController {
     const userId: string = req.userId;
     try {
       const result = await this.userServices.getOneCourse(courseId, userId);
-      if (result instanceof NotFoundError) {
-        return res.status(result.statusCode).json({ message: result.message });
-      }
 
       res.status(200).json({ course: result });
     } catch (e) {
+      if (e instanceof NotFoundError) {
+        return res.status(e.statusCode).json({ message: e.message });
+      }
       next(e);
     }
   };
 
   getSubscribedCourses: RequestHandler = async (req, res, next) => {
     const userId = req.userId;
-    const result = await this.userServices.getSubscribedCourses(userId, true);
-    if (result instanceof NotFoundError) {
-      return res.status(result.statusCode).json({ message: result.message });
+    try {
+      const result = await this.userServices.getSubscribedCourses(userId, true);
+
+      res.status(200).json({ courses: result });
+    } catch (e) {
+      if (e instanceof NotFoundError) {
+        return res.status(e.statusCode).json({ message: e.message });
+      }
+      next(e);
     }
-    res.status(200).json({ courses: result });
   };
 
   getAllCourses: RequestHandler = async (req, res, next) => {
     const userId = req.userId;
-    const result = await this.userServices.getAllCourses(userId);
-    if (result instanceof NotFoundError) {
-      return res.status(result.statusCode).json({ message: result.message });
-    }
+    try {
+      const result = await this.userServices.getAllCourses(userId);
 
-    res.status(200).json({ courses: result });
+      res.status(200).json({ courses: result });
+    } catch (e) {
+      if (e instanceof NotFoundError) {
+        return res.status(e.statusCode).json({ message: e.message });
+      }
+      next(e);
+    }
   };
 
   courseSubscribeHandler: RequestHandler = async (req, res, next) => {
@@ -49,14 +58,13 @@ export default class UserController {
     const userId = req.userId;
     try {
       await this.userServices.subscribeToCourse(courseId, userId);
+      res.status(201).json({ message: "successfully subscribed!" });
     } catch (e) {
       if (e instanceof NotFoundError || e instanceof ConflictError) {
         return res.status(e.statusCode).json({ message: e.message });
       }
       next(e);
     }
-
-    res.status(201).json({ message: "successfully subscribed!" });
   };
 
   courseUnSubscribeHandler: RequestHandler = async (req, res, next) => {
