@@ -61,7 +61,7 @@ export default class UserAppServices implements UserServices {
 
   async subscribeToCourse(courseId: string, userId: string): Promise<void> {
     const course = await this.courseRepository.findById(courseId);
-    if (!course) {
+    if (!course || !course.available) {
       throw new NotFoundError("course not found to subscribe.");
     }
     const subscribed: boolean =

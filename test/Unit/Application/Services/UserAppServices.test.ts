@@ -152,4 +152,15 @@ describe("UserAppServices test suite", () => {
       validCourseId
     );
   });
+  it("should not subscribe to the course if the course is unavailable", async () => {
+    //make course unavailable
+    someCourse.available = false;
+    /////////////
+    courseRepositoryMocK.findById.mockResolvedValueOnce(someCourse);
+    const t = async () => {
+      await sut.subscribeToCourse(validCourseId, userIdMock);
+    };
+
+    await expect(t).rejects.toThrow("course not found to subscribe.");
+  });
 });
