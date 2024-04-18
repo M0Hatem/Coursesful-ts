@@ -7,7 +7,7 @@ import UserRepositoryImpl from "../../../../../src/infrastructure/Repositories/U
 import UserPayload from "../../../../../src/infrastructure/Models/UserPayload";
 import Course from "../../../../../src/Domain/Entites/Course";
 import CourseDto from "../../../../../src/infrastructure/Models/CourseDto";
-import CoursePayload from "../../../../../src/infrastructure/Models/CoursePayload";
+import CourseQueryOptions from "../../../../../src/Domain/QueryModels/CourseQueryOptions";
 import UserMongooseModel from "../../../../../src/infrastructure/Models/UserMongooseModel";
 
 jest.setTimeout(30000);
@@ -21,7 +21,7 @@ describe("CourseRepositoryImpl low mock test suite", () => {
     "test@example.com",
     "password123"
   );
-  const CoursePayload: CoursePayload = {
+  const CoursePayload: CourseQueryOptions = {
     name: "Test course",
     instructorId: "Test instructorId",
   };
@@ -61,7 +61,7 @@ describe("CourseRepositoryImpl low mock test suite", () => {
   });
 
   it("should get course by id", async () => {
-    const course = await sut.getCourse(createdCourse._id, user._id);
+    const course = await sut.getCourse(createdCourse._id);
 
     expect(course).toBeDefined();
     expect(course.name).toEqual(createdCourse.name);
@@ -69,13 +69,13 @@ describe("CourseRepositoryImpl low mock test suite", () => {
   });
 
   it("should not get course for invalid id", async () => {
-    const course = await sut.getCourse("wrongId", user._id);
+    const course = await sut.getCourse("wrongId");
 
     expect(course).toBeNull();
   });
 
   it("should not get course for wrongID", async () => {
-    const course = await sut.getCourse("65e70e810d1cf296b3c3596g", user._id);
+    const course = await sut.getCourse("65e70e810d1cf296b3c3596g");
 
     expect(course).toBeNull();
   });
@@ -94,13 +94,13 @@ describe("CourseRepositoryImpl low mock test suite", () => {
   });
 
   it("should not find Course if invalid ID passed", async () => {
-    await expect(sut.findById("wrongId")).rejects.toThrowError("Invalid ID");
+    await expect(sut.findById("wrongId")).rejects.toThrow("Invalid ID");
   });
 
   it("should populateCourse", async () => {
     const populatedCourse = await sut.populateCourse(
       { name: createdCourse.name },
-      "instructorId"
+      "instructorId?"
     );
     expect(populatedCourse.instructorId.name).toBeDefined();
   });

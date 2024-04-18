@@ -1,7 +1,7 @@
 import "reflect-metadata";
 import { AdminAppServices } from "../../../../src/Application/Services/AdminAppServices";
 import CourseRepository from "../../../../src/Domain/Repositories/CourseRepository";
-import NotFoundError from "../../../../src/types/errors/NotFoundError";
+import NotFoundError from "../../../../src/Presentation/types/errors/NotFoundError";
 
 describe("AdminAppServices test suite", () => {
   let sut: AdminAppServices;
@@ -53,7 +53,7 @@ describe("AdminAppServices test suite", () => {
     });
     expect(courseRepositoryMock.populateCourse).toHaveBeenCalledWith(
       { name: someCourse.name },
-      "instructorId"
+      "instructorId?"
     );
     expect(courseRepositoryMock.addCourse).toHaveBeenCalledWith(
       someCourse,
@@ -78,7 +78,7 @@ describe("AdminAppServices test suite", () => {
     });
     expect(courseRepositoryMock.populateCourse).toHaveBeenCalledWith(
       { name: someCourse.name },
-      "instructorId"
+      "instructorId?"
     );
     expect(courseRepositoryMock.addCourse).toHaveBeenCalledTimes(0);
   });

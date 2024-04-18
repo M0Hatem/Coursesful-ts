@@ -2,8 +2,8 @@ import { RequestHandler } from "express";
 
 import UserServices from "../../Domain/Services/UserServices";
 import UserAppServices from "../../Application/Services/UserAppServices";
-import NotFoundError from "../../types/errors/NotFoundError";
-import ConflictError from "../../types/errors/ConflictError";
+import NotFoundError from "../types/errors/NotFoundError";
+import ConflictError from "../types/errors/ConflictError";
 import { inject, injectable } from "tsyringe";
 
 @injectable()

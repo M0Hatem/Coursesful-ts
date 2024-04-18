@@ -1,4 +1,4 @@
-export default class CoursePayload {
+export default class CourseQueryOptions {
   constructor(
     public _id?: string,
     public name?: string,

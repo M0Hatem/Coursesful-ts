@@ -1,20 +1,17 @@
 import Course from "../Entites/Course";
 import CourseDto from "../../infrastructure/Models/CourseDto";
-import NotFoundError from "../../types/errors/NotFoundError";
-import ConflictError from "../../types/errors/ConflictError";
+import NotFoundError from "../../Presentation/types/errors/NotFoundError";
+import ConflictError from "../../Presentation/types/errors/ConflictError";
 
 export default interface UserServices {
-  getAllCourses(userId: string): Promise<CourseDto[] | NotFoundError>;
+  getAllCourses(userId: string): Promise<CourseDto[]>;
 
-  getOneCourse(
-    courseId: string,
-    userId: string
-  ): Promise<CourseDto | NotFoundError>;
+  getOneCourse(courseId: string, userId: string): Promise<CourseDto>;
 
   getSubscribedCourses(
     userId: string,
     availability: boolean
-  ): Promise<CourseDto[] | NotFoundError>;
+  ): Promise<CourseDto[]>;
 
   // unSubscribeToCourse(): void;
   // save(userId: string): void;

@@ -1,5 +1,5 @@
-import AuthError from "../../types/errors/AuthError";
-import ConflictError from "../../types/errors/ConflictError";
+import AuthError from "../../Presentation/types/errors/AuthError";
+import ConflictError from "../../Presentation/types/errors/ConflictError";
 
 export default interface AuthServices {
   signup(name: string, email: string, password: string): Promise<void>;

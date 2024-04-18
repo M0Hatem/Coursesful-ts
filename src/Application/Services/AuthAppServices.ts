@@ -1,10 +1,10 @@
 import AuthServices from "../../Domain/Services/AuthServices";
 import UserRepository from "../../Domain/Repositories/UserRepository";
 import UserRepositoryImpl from "../../infrastructure/Repositories/UserRepositoryImpl";
-import AuthError from "../../types/errors/AuthError";
+import AuthError from "../../Presentation/types/errors/AuthError";
 import comparingUtils from "../../util/passwordCompare";
 import { signToken } from "../../util/SignToken";
-import ConflictError from "../../types/errors/ConflictError";
+import ConflictError from "../../Presentation/types/errors/ConflictError";
 import { getHashedPassword } from "../../util/hashPassword";
 import { inject, injectable } from "tsyringe";
 import UserPayload from "../../infrastructure/Models/UserPayload";

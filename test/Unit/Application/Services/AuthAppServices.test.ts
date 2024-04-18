@@ -3,10 +3,10 @@ import AuthAppServices from "../../../../src/Application/Services/AuthAppService
 import UserRepository from "../../../../src/Domain/Repositories/UserRepository";
 import * as hashingUtils from "../../../../src/util/hashPassword";
 import UserPayload from "../../../../src/infrastructure/Models/UserPayload";
-import ConflictError from "../../../../src/types/errors/ConflictError";
+import ConflictError from "../../../../src/Presentation/types/errors/ConflictError";
 import comparingUtils from "../../../../src/util/passwordCompare";
 import * as jwtUtils from "../../../../src/util/SignToken";
-import AuthError from "../../../../src/types/errors/AuthError";
+import AuthError from "../../../../src/Presentation/types/errors/AuthError";
 
 const getHashedPasswordMock = jest.spyOn(hashingUtils, "getHashedPassword");
 const passwordCompareMock = jest.spyOn(comparingUtils, "passwordCompare");

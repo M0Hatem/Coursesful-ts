@@ -1,13 +1,12 @@
 import User from "../../Domain/Entites/User";
 import UserMongooseModel from "../Models/UserMongooseModel";
-import Course from "../../Domain/Entites/Course";
-import AdminRepository from "../../Domain/Repositories/AdminRepository";
 import UserPayload from "../Models/UserPayload";
 import { injectable } from "tsyringe";
 import mongoose from "mongoose";
+import UserRepository from "../../Domain/Repositories/UserRepository";
 
 @injectable()
-export default class UserRepositoryImpl implements AdminRepository {
+export default class UserRepositoryImpl implements UserRepository {
   async createUser(arg: UserPayload): Promise<void> {
     if (!(arg instanceof UserPayload)) {
       throw Error("Invalid payLoad");

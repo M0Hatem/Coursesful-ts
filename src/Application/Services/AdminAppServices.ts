@@ -1,12 +1,12 @@
 import AdminServices from "../../Domain/Services/AdminServices";
 import Course from "../../Domain/Entites/Course";
 import CourseRepository from "../../Domain/Repositories/CourseRepository";
-import CourseRepositoryImpl from "../../infrastructure/Repositories/CourseRepositoryImpl";
-import ConflictError from "../../types/errors/ConflictError";
-import NotFoundError from "../../types/errors/NotFoundError";
-import AuthError from "../../types/errors/AuthError";
+import ConflictError from "../../Presentation/types/errors/ConflictError";
+import NotFoundError from "../../Presentation/types/errors/NotFoundError";
+import AuthError from "../../Presentation/types/errors/AuthError";
 import { inject, injectable } from "tsyringe";
-import Instructor from "../../Domain/Entites/Instructor";
+import UpdateCourseRequest from "../models/UpdateCourseRequest";
+import AddCourseRequest from "../models/AddCourseRequest";
 
 @injectable()
 export class AdminAppServices implements AdminServices {
@@ -14,27 +14,24 @@ export class AdminAppServices implements AdminServices {
     @inject("CourseRepository")
     private readonly courseRepository: CourseRepository
   ) {}
-  async addCourse(
-    course: { name: string; maxStudents: number; price: number },
-    userId: string
-  ): Promise<Course> {
+  async addCourse(request: AddCourseRequest, userId: string): Promise<Course> {
     let doc = await this.courseRepository.findOne({
-      name: course.name,
+      name: request.name,
     });
 
     if (!doc) {
-      return await this.courseRepository.addCourse(course, userId);
+      return await this.courseRepository.addCourse(request, userId);
     }
 
     doc = await this.courseRepository.populateCourse(
-      { name: course.name },
-      "instructorId"
+      { name: request.name },
+      "instructorId?"
     );
     // @ts-ignore
     if (doc.instructorId._id!.toString() === userId) {
       throw new ConflictError("there is a course with the same name");
     } else {
-      return await this.courseRepository.addCourse(course, userId);
+      return await this.courseRepository.addCourse(request, userId);
     }
   }
 
@@ -51,22 +48,26 @@ export class AdminAppServices implements AdminServices {
     await this.courseRepository.findByIdAndDelete(courseId);
   }
 
+  //TODO Create UpdateCourseRequest model
   async updateCourse(
     courseId: string,
-    course: { name?: string; maxStudents?: number; price?: number },
+    request: UpdateCourseRequest,
     userId: string
   ): Promise<void> {
-    const result = await this.courseRepository.findById(courseId);
+    const course = await this.courseRepository.findById(courseId);
 
-    if (!result) {
+    if (!course) {
       throw new NotFoundError("Course Not Found!");
     }
 
-    if ("instructorId" in result && result.instructorId.toString() !== userId) {
+    if ("instructorId" in course && course.instructorId.toString() !== userId) {
       throw new AuthError(
         "You do not have the necessary permission to update this course"
       );
     }
-    await this.courseRepository.findOneAndUpdate({ _id: courseId }, course);
+    await this.courseRepository.findOneAndUpdate({ _id: courseId }, request);
+    // // repo.save(course)
+    // // course.UpdateName(name);
+    // await this.courseRepository.save(course);
   }
 }

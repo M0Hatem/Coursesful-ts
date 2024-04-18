@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import { RequestHandler } from "express";
-import ValidationError from "../../types/ValidationError";
+import ValidationError from "../types/ValidationError";
 
 export const authMiddleware: RequestHandler = async (req, res, next) => {
   const authHeader = req.get("Authorization");

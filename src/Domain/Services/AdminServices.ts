@@ -1,7 +1,7 @@
 import Course from "../Entites/Course";
-import ConflictError from "../../types/errors/ConflictError";
-import NotFoundError from "../../types/errors/NotFoundError";
-import AuthError from "../../types/errors/AuthError";
+import ConflictError from "../../Presentation/types/errors/ConflictError";
+import NotFoundError from "../../Presentation/types/errors/NotFoundError";
+import AuthError from "../../Presentation/types/errors/AuthError";
 
 export default interface AdminServices {
   addCourse(
