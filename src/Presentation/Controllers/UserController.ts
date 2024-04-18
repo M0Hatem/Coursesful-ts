@@ -62,11 +62,15 @@ export default class UserController {
   courseUnSubscribeHandler: RequestHandler = async (req, res, next) => {
     const courseId = req.params.id;
     const userId = req.userId;
-    const result: void | NotFoundError | ConflictError =
+    try {
       await this.userServices.unSubscribeToCourse(courseId, userId);
-    if (result instanceof NotFoundError || result instanceof ConflictError) {
-      return res.status(result.statusCode).json({ message: result.message });
+
+      res.status(201).json({ message: "successfully unSubscribed." });
+    } catch (e) {
+      if (e instanceof NotFoundError || e instanceof ConflictError) {
+        return res.status(e.statusCode).json({ message: e.message });
+      }
+      next(e);
     }
-    res.status(201).json({ message: "successfully unSubscribed." });
   };
 }
