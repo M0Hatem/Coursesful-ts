@@ -1,9 +1,9 @@
 import UserServices from "../../Domain/Services/UserServices";
-import CourseDto from "../../infrastructure/Models/CourseDto";
+import CourseDto from "../../Infrastructure/Models/CourseDto";
 import CourseRepository from "../../Domain/Repositories/CourseRepository";
 import NotFoundError from "../../Presentation/types/errors/NotFoundError";
 import ConflictError from "../../Presentation/types/errors/ConflictError";
-import { autoInjectable, inject, injectable } from "tsyringe";
+import { inject, injectable } from "tsyringe";
 import Student from "../../Domain/Entites/Student";
 
 @injectable()

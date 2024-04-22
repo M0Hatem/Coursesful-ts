@@ -1,13 +1,13 @@
 import AuthServices from "../../Domain/Services/AuthServices";
 import UserRepository from "../../Domain/Repositories/UserRepository";
-import UserRepositoryImpl from "../../infrastructure/Repositories/UserRepositoryImpl";
+import UserRepositoryImpl from "../../Infrastructure/Repositories/UserRepositoryImpl";
 import AuthError from "../../Presentation/types/errors/AuthError";
-import comparingUtils from "../../util/passwordCompare";
-import { signToken } from "../../util/SignToken";
+import comparingUtils from "../../Util/passwordCompare";
+import { signToken } from "../../Util/SignToken";
 import ConflictError from "../../Presentation/types/errors/ConflictError";
-import { getHashedPassword } from "../../util/hashPassword";
+import { getHashedPassword } from "../../Util/hashPassword";
 import { inject, injectable } from "tsyringe";
-import UserPayload from "../../infrastructure/Models/UserPayload";
+import UserPayload from "../../Infrastructure/Models/UserPayload";
 
 @injectable()
 export default class AuthAppServices implements AuthServices {

@@ -1,5 +1,5 @@
 import Course from "../Entites/Course";
-import CourseDto from "../../infrastructure/Models/CourseDto";
+import CourseDto from "../../Infrastructure/Models/CourseDto";
 import NotFoundError from "../../Presentation/types/errors/NotFoundError";
 import ConflictError from "../../Presentation/types/errors/ConflictError";
 

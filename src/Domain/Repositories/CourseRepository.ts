@@ -1,9 +1,9 @@
 import Course from "../Entites/Course";
-import CourseDto from "../../infrastructure/Models/CourseDto";
+import CourseDto from "../../Infrastructure/Models/CourseDto";
 import CourseQueryOptions from "../QueryModels/CourseQueryOptions";
-import PopulatedCourse from "../../infrastructure/Models/PopulatedCourse";
+import PopulatedCourse from "../../Infrastructure/Models/PopulatedCourse";
 import AddCourseRequest from "../../Application/models/AddCourseRequest";
-import UpdateCourseRequest from "../../Application/models/UpdateCourseRequest";
+
 //TODO remove all infra dependencies
 // you can create application model object for your queries (e.g CourseDetails)
 // Remove PopulatedCourse

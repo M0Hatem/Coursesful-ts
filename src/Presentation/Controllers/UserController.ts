@@ -29,7 +29,6 @@ export default class UserController {
     const userId = req.userId;
     try {
       const result = await this.userServices.getSubscribedCourses(userId, true);
-
       res.status(200).json({ courses: result });
     } catch (e) {
       if (e instanceof NotFoundError) {

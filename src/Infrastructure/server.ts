@@ -5,14 +5,14 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import { container } from "tsyringe";
 
-import globalErrorHandler from "../util/globalErrorHandler";
+import globalErrorHandler from "../Util/globalErrorHandler";
 import AdminRoutes from "../Presentation/Routes/AdminRoutes";
 import StudentRoutes from "../Presentation/Routes/StudentRoutes";
 import AuthRoutes from "../Presentation/Routes/AuthRoutes";
 import UserController from "../Presentation/Controllers/UserController";
-import AdminController from "../Presentation/Controllers/adminController";
+import AdminController from "../Presentation/Controllers/AdminController";
 import AuthController from "../Presentation/Controllers/AuthController";
-import "../config/diContainer";
+import "../Config/diContainer";
 
 export function createServer() {
   const app = express();

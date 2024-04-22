@@ -1,7 +1,7 @@
-import { createServer } from "./src/infrastructure/server";
-import { connectDatabase } from "./src/infrastructure/database";
-import shutdown from "./src/util/shutdown";
-import { Server } from "http";
+import { createServer } from "./src/Infrastructure/server";
+import { connectDatabase } from "./src/Infrastructure/database";
+import shutdown from "./src/Util/shutdown";
+import { Server } from "Http";
 
 let server: Server;
 

@@ -1,5 +1,5 @@
 import User from "../Entites/User";
-import UserPayload from "../../infrastructure/Models/UserPayload";
+import UserPayload from "../../Infrastructure/Models/UserPayload";
 // TODO same comment as in the CourseRepo
 export default interface UserRepository {
   createUser(arg: UserPayload): Promise<void>;

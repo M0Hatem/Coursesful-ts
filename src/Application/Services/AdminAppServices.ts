@@ -50,7 +50,6 @@ export class AdminAppServices implements AdminServices {
     await this.courseRepository.findByIdAndDelete(courseId);
   }
 
-  //TODO Create UpdateCourseRequest model
   async updateCourse(
     courseId: string,
     request: UpdateCourseRequest,

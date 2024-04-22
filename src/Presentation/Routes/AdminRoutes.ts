@@ -2,7 +2,7 @@ import { Router } from "express";
 
 import authMiddleware from "../middlewares/authMiddleware";
 import Validator from "../middlewares/Validator";
-import AdminController from "../Controllers/adminController";
+import AdminController from "../Controllers/AdminController";
 import { inject } from "tsyringe";
 
 export default class AdminRoutes {

@@ -1,11 +1,11 @@
 import "reflect-metadata";
 import AuthAppServices from "../../../../src/Application/Services/AuthAppServices";
 import UserRepository from "../../../../src/Domain/Repositories/UserRepository";
-import * as hashingUtils from "../../../../src/util/hashPassword";
-import UserPayload from "../../../../src/infrastructure/Models/UserPayload";
+import * as hashingUtils from "../../../../src/Util/hashPassword";
+import UserPayload from "../../../../src/Infrastructure/Models/UserPayload";
 import ConflictError from "../../../../src/Presentation/types/errors/ConflictError";
-import comparingUtils from "../../../../src/util/passwordCompare";
-import * as jwtUtils from "../../../../src/util/SignToken";
+import comparingUtils from "../../../../src/Util/passwordCompare";
+import * as jwtUtils from "../../../../src/Util/SignToken";
 import AuthError from "../../../../src/Presentation/types/errors/AuthError";
 
 const getHashedPasswordMock = jest.spyOn(hashingUtils, "getHashedPassword");

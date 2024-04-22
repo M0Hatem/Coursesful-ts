@@ -21,6 +21,7 @@ describe("AdminAppServices test suite", () => {
     maxStudents: 10,
     price: 99,
     instructorId: someUserId,
+    available: true,
   };
   beforeEach(() => {
     sut = new AdminAppServices(courseRepositoryMock as any as CourseRepository);
@@ -122,8 +123,11 @@ describe("AdminAppServices test suite", () => {
     await expect(t).rejects.toThrow("Course Not Found!");
     expect(courseRepositoryMock.findByIdAndDelete).toHaveBeenCalledTimes(0);
   });
-  it("should throw an error when attempting to delete a course that does not exist", async () => {
-    courseRepositoryMock.findById.mockResolvedValueOnce(null);
+  it("should throw an error when attempting to delete a course that unavailable", async () => {
+    //make the course unavailable
+    someCourse.available = false;
+    //////////////////////
+    courseRepositoryMock.findById.mockResolvedValueOnce(someCourse);
 
     const t = async () => {
       await sut.deleteCourse(someCourse._id, someUserId);

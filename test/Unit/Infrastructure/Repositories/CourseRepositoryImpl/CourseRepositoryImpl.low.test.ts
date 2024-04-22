@@ -1,14 +1,14 @@
 import "reflect-metadata";
 import { MongoMemoryServer } from "mongodb-memory-server";
 import mongoose from "mongoose";
-import CourseRepositoryImpl from "../../../../../src/infrastructure/Repositories/CourseRepositoryImpl";
+import CourseRepositoryImpl from "../../../../../src/Infrastructure/Repositories/CourseRepositoryImpl";
 import User from "../../../../../src/Domain/Entites/User";
-import UserRepositoryImpl from "../../../../../src/infrastructure/Repositories/UserRepositoryImpl";
-import UserPayload from "../../../../../src/infrastructure/Models/UserPayload";
+import UserRepositoryImpl from "../../../../../src/Infrastructure/Repositories/UserRepositoryImpl";
+import UserPayload from "../../../../../src/Infrastructure/Models/UserPayload";
 import Course from "../../../../../src/Domain/Entites/Course";
-import CourseDto from "../../../../../src/infrastructure/Models/CourseDto";
+import CourseDto from "../../../../../src/Infrastructure/Models/CourseDto";
 import CourseQueryOptions from "../../../../../src/Domain/QueryModels/CourseQueryOptions";
-import UserMongooseModel from "../../../../../src/infrastructure/Models/UserMongooseModel";
+import UserMongooseModel from "../../../../../src/Infrastructure/Models/UserMongooseModel";
 
 jest.setTimeout(30000);
 describe("CourseRepositoryImpl low mock test suite", () => {

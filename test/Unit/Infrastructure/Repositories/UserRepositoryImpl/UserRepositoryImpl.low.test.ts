@@ -1,8 +1,8 @@
 import "reflect-metadata";
 import { MongoMemoryServer } from "mongodb-memory-server";
-import UserRepositoryImpl from "../../../../../src/infrastructure/Repositories/UserRepositoryImpl";
+import UserRepositoryImpl from "../../../../../src/Infrastructure/Repositories/UserRepositoryImpl";
 import mongoose from "mongoose";
-import UserPayload from "../../../../../src/infrastructure/Models/UserPayload";
+import UserPayload from "../../../../../src/Infrastructure/Models/UserPayload";
 import User from "../../../../../src/Domain/Entites/User";
 
 jest.setTimeout(30000);

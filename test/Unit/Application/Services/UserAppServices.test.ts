@@ -2,7 +2,7 @@ import "reflect-metadata";
 import UserAppServices from "../../../../src/Application/Services/UserAppServices";
 import CourseRepository from "../../../../src/Domain/Repositories/CourseRepository";
 import Student from "../../../../src/Domain/Entites/Student";
-import CourseDto from "../../../../src/infrastructure/Models/CourseDto";
+import CourseDto from "../../../../src/Infrastructure/Models/CourseDto";
 import NotFoundError from "../../../../src/Presentation/types/errors/NotFoundError";
 
 describe("UserAppServices test suite", () => {

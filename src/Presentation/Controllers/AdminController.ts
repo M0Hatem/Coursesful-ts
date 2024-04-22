@@ -6,7 +6,7 @@ import ConflictError from "../types/errors/ConflictError";
 import NotFoundError from "../types/errors/NotFoundError";
 import UpdateCourseRequest from "../models/UpdateCourseRequest";
 import AuthError from "../types/errors/AuthError";
-import CourseRepositoryImpl from "../../infrastructure/Repositories/CourseRepositoryImpl";
+import CourseRepositoryImpl from "../../Infrastructure/Repositories/CourseRepositoryImpl";
 import { inject, injectable } from "tsyringe";
 
 @injectable()

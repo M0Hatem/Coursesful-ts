@@ -1,6 +1,6 @@
 import "reflect-metadata";
-import UserRepositoryImpl from "../../../../../src/infrastructure/Repositories/UserRepositoryImpl";
-import UserPayload from "../../../../../src/infrastructure/Models/UserPayload";
+import UserRepositoryImpl from "../../../../../src/Infrastructure/Repositories/UserRepositoryImpl";
+import UserPayload from "../../../../../src/Infrastructure/Models/UserPayload";
 
 const findDocumentById = jest.spyOn(
   UserRepositoryImpl.prototype,
@@ -8,7 +8,7 @@ const findDocumentById = jest.spyOn(
 );
 const saveMock = jest.fn();
 
-jest.mock("../../../../../src/infrastructure/Models/UserMongooseModel", () => {
+jest.mock("../../../../../src/Infrastructure/Models/UserMongooseModel", () => {
   return jest.fn().mockImplementation(() => ({
     save: saveMock,
   }));
