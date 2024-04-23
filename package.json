@@ -22,6 +22,7 @@
   "homepage": "https://github.com/M0Hatem/Coursesful-ts#readme",
   "dependencies": {
     "@types/node": "^20.11.9",
+    "@types/supertest": "^6.0.2",
     "bcrypt": "^5.1.1",
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",
@@ -30,7 +31,6 @@
     "express-validator": "^7.0.1",
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.3.0",
-    "mongodb-memory-server": "^9.1.7",
     "mongoose": "^8.1.1",
     "reflect-metadata": "^0.2.1",
     "tsyringe": "^4.8.0"
@@ -42,7 +42,9 @@
     "@types/jest": "^29.5.12",
     "@types/jsonwebtoken": "^9.0.5",
     "jest": "^29.7.0",
+    "mongodb-memory-server": "^9.2.0-beta.1",
     "nodemon": "^3.0.3",
+    "supertest": "^6.3.4",
     "ts-jest": "^29.1.2",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3",

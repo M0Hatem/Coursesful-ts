@@ -19,12 +19,14 @@ export default class AdminRoutes {
     this.setupRoutes();
   }
   private setupRoutes() {
+    // POST route for adding a new course
     this.router.post(
       "/add",
       this.isAuth,
       [this.validator.nameValidation, this.validator.maxStudentsValidation],
       this.adminController.addCourse
     );
+    // PUT route for updating existing course
     this.router.put(
       "/:id",
       this.isAuth,

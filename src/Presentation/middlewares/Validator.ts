@@ -1,5 +1,5 @@
 import { body } from "express-validator";
-import { NextFunction, RequestHandler } from "express";
+import { RequestHandler } from "express";
 
 export default class Validator {
   nameValidation: RequestHandler = async (req, res, next) => {
