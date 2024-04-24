@@ -1,7 +1,7 @@
 import { createServer } from "./src/Infrastructure/server";
 import { connectDatabase } from "./src/Infrastructure/database";
 import shutdown from "./src/Util/shutdown";
-import { Server } from "Http";
+import { Server } from "http";
 
 let server: Server;
 
