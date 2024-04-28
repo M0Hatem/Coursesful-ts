@@ -4,8 +4,7 @@
   "description": "project handle restful req for courses sites",
   "main": "app.ts",
   "scripts": {
-    "start": "nodemon dist/app.js",
-    "build": "tsc",
+    "start": "ts-node app.ts",
     "test": "jest"
   },
   "repository": {

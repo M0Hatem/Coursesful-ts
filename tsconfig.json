@@ -11,6 +11,14 @@
     "alwaysStrict": true
     "moduleResolution": "node"
   */
+  "ts-node": {
+    "files": true
+  },
+  "files": [
+    "./src",
+    "app.ts",
+    "./src/Presentation/types/custom.d.ts"
+  ],
   "compilerOptions": {
     "target": "es2020",
     "module": "CommonJS",
@@ -34,7 +42,8 @@
   },
   "include": [
     "./src",
-    "app.ts"
+    "app.ts",
+    "./src/Presentation/types/custom.d.ts"
   ],
   "exclude": [
     "./node_modules",
