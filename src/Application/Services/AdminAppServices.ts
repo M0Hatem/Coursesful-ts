@@ -14,7 +14,6 @@ export class AdminAppServices implements AdminServices {
     @inject("CourseRepository")
     private readonly courseRepository: CourseRepository
   ) {}
-
   async addCourse(request: AddCourseRequest, userId: string): Promise<Course> {
     let doc = await this.courseRepository.findOne({
       name: request.name,
